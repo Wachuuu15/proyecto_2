@@ -62,6 +62,33 @@ services:
       timeout: 10s
       retries: 5
 
+  # Filebeat - Recolector de logs de Docker
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.11.0
+    container_name: filebeat
+    user: root  # Necesario para leer logs de Docker
+    volumes:
+      # Configuraci?n de Filebeat
+      - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      # Logs de contenedores Docker
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+      # Socket de Docker para metadata
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Datos de Filebeat (registry, estado)
+      - filebeat-data:/usr/share/filebeat/data
+    environment:
+      # Conexi?n a Elasticsearch
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      # Conexi?n a Kibana para dashboards
+      - KIBANA_HOST=http://kibana:5601
+    networks:
+      - elk-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy  # Espera a que Elasticsearch est? listo
+    restart: unless-stopped
+    command: filebeat -e -strict.perms=false
+
 # Definici?n de redes
 networks:
   elk-network:
@@ -70,4 +97,6 @@ networks:
 # Definici?n de vol?menes persistentes
 volumes:
   elasticsearch-data:
+    driver: local
+  filebeat-data:
     driver: local
