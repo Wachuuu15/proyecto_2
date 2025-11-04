@@ -1,86 +1,95 @@
-# Paso 4: Agregar Filebeat - El Conector Cr?tico
+# Paso 4: Agregar Filebeat - El Conector Crítico
+<a id="readme-top"></a>
 
-## ?? Objetivo
+<!--
+PROJECT DESCRIPTION
+-->
+## 📜 Descripción
+
 Implementar Filebeat como recolector de logs que conecta Juice Shop con Elasticsearch, completando el flujo de datos del sistema ELK.
 
-## ?? Relaci?n con TODOS los pasos anteriores
+**Filebeat** es un "shipper" (transportador) ligero de logs, parte de la familia Beats de Elastic.
 
-### El problema que resolvemos:
+### Características principales:
+1. **Ligero**: Consume pocos recursos (~10-50MB RAM)
+2. **Confiable**: No pierde datos si Elasticsearch cae
+3. **Específico para logs**: Optimizado para leer archivos de texto
+4. **Integrado**: Diseñado para trabajar con Elasticsearch
 
-**Hasta ahora tenemos**:
+### Familia Beats:
+- **Filebeat**: Logs de archivos
+- **Metricbeat**: Métricas del sistema (CPU, RAM)
+- **Packetbeat**: Tráfico de red
+- **Heartbeat**: Monitoreo de disponibilidad
+- **Auditbeat**: Auditoría de seguridad
+
+### ¿Por qué necesitamos Filebeat?
+
+**Sin Filebeat** (Juice Shop y Elasticsearch desconectados):
 ```
 PASO 1: Juice Shop          PASO 2: Elasticsearch       PASO 3: Kibana
-???????????????              ????????????????           ????????????????
-? Juice Shop  ?              ?              ?           ?              ?
-?             ?              ? Elasticsearch?????????????   Kibana     ?
-? Logs en     ?      ?      ?              ?           ?              ?
-? archivos    ?   NO HAY     ? Vac?o        ?           ? Sin datos    ?
-?             ?   CONEXI?N   ?              ?           ? para mostrar ?
-???????????????              ????????????????           ????????????????
+┌──────────────┐              ┌──────────────┐           ┌──────────────┐
+│ Juice Shop   │              │              │           │              │
+│              │              │ Elasticsearch├───────────┤   Kibana     │
+│ Logs en      │      ❌      │              │  query    │              │
+│ archivos     │   NO HAY     │ Vacío        │           │ Sin datos    │
+│              │   CONEXIÓN   │              │           │ para mostrar │
+└──────────────┘              └──────────────┘           └──────────────┘
 ```
 
-**El flujo COMPLETO con Filebeat**:
+**Con Filebeat** (Flujo completo):
 ```
 PASO 1              PASO 4 (NUEVO)        PASO 2              PASO 3
-????????????        ????????????        ????????????        ????????????
-?  Juice   ?        ?          ?        ?          ?        ?          ?
-?  Shop    ?????????? Filebeat ??????????Elastics- ??????????  Kibana  ?
-?          ?  logs  ?          ?  JSON  ?  earch   ? query  ?          ?
-? Genera   ?        ? Lee      ?        ? Almacena ?        ? Muestra  ?
-? logs     ?        ? Procesa  ?        ? Indexa   ?        ? Visualiza?
-????????????        ????????????        ????????????        ????????????
-    ?                    ?                    ?                   ?
-    ?                    ?                    ?                   ?
-    ?                    ?                    ?                   ?
-Archivos            Monitorea            ?ndices             Usuario
+┌──────────┐        ┌──────────┐        ┌──────────┐        ┌──────────┐
+│  Juice   │        │          │        │          │        │          │
+│  Shop    ├────────┤ Filebeat ├────────┤Elastics- ├────────┤  Kibana  │
+│          │  logs  │          │  JSON  │  earch   │ query  │          │
+│ Genera   │        │ Lee      │        │ Almacena │        │ Muestra  │
+│ logs     │        │ Procesa  │        │ Indexa   │        │ Visualiza│
+└──────────┘        └──────────┘        └──────────┘        └──────────┘
+    │                    │                    │                   │
+    │                    │                    │                   │
+    │                    │                    │                   │
+Archivos            Monitorea            Índices             Usuario
 .log en             archivos             con datos           ve logs
 contenedor          Docker               estructurados       en tiempo
                                                              real
 ```
 
-## ?? ?Qu? es Filebeat?
+## 🔗 Relación con pasos anteriores
 
-**Filebeat** es un "shipper" (transportador) ligero de logs, parte de la familia Beats de Elastic.
+### El problema que resolvemos:
 
-### Familia Beats:
-- **Filebeat**: Logs de archivos
-- **Metricbeat**: M?tricas del sistema (CPU, RAM)
-- **Packetbeat**: Tr?fico de red
-- **Heartbeat**: Monitoreo de disponibilidad
-- **Auditbeat**: Auditor?a de seguridad
+Hasta ahora tenemos:
+- ✅ **Paso 1**: Juice Shop genera logs
+- ✅ **Paso 2**: Elasticsearch puede almacenar logs
+- ✅ **Paso 3**: Kibana puede visualizar logs
+- ❌ **Problema**: No hay conexión entre Juice Shop y Elasticsearch
 
-### ?Por qu? Filebeat espec?ficamente?
+### ¿Cómo funciona Filebeat?
 
-1. **Ligero**: Consume pocos recursos (~10-50MB RAM)
-2. **Confiable**: No pierde datos si Elasticsearch cae
-3. **Espec?fico para logs**: Optimizado para leer archivos de texto
-4. **Integrado**: Dise?ado para trabajar con Elasticsearch
-
-## ?? ?C?mo funciona Filebeat?
-
-### Arquitectura interna:
-
+**Arquitectura interna**:
 ```
-???????????????????????????????????????????????????????????
-?                    FILEBEAT                             ?
-?                                                         ?
-?  ???????????????      ????????????????                ?
-?  ?   Inputs    ????????  Processors  ?                ?
-?  ?             ?      ?              ?                ?
-?  ? - Container ?      ? - Parse JSON ?                ?
-?  ? - Log       ?      ? - Add fields ?                ?
-?  ? - Syslog    ?      ? - Filter     ?                ?
-?  ???????????????      ????????????????                ?
-?                              ?                         ?
-?                              ?                         ?
-?                       ????????????????                ?
-?                       ?   Output     ?                ?
-?                       ?              ?                ?
-?                       ? Elasticsearch?                ?
-?                       ? Logstash     ?                ?
-?                       ? Kafka        ?                ?
-?                       ????????????????                ?
-???????????????????????????????????????????????????????????
+┌─────────────────────────────────────────────────────────────────┐
+│                    FILEBEAT                                     │
+│                                                                 │
+│  ┌────────────┐      ┌──────────────┐                         │
+│  │   Inputs   ├──────┤  Processors  │                         │
+│  │            │      │              │                         │
+│  │ - Container│      │ - Parse JSON │                         │
+│  │ - Log      │      │ - Add fields │                         │
+│  │ - Syslog   │      │ - Filter     │                         │
+│  └────────────┘      └──────────────┘                         │
+│                             │                                   │
+│                             │                                   │
+│                      ┌──────────────┐                         │
+│                      │   Output     │                         │
+│                      │              │                         │
+│                      │ Elasticsearch│                         │
+│                      │ Logstash     │                         │
+│                      │ Kafka        │                         │
+│                      └──────────────┘                         │
+└─────────────────────────────────────────────────────────────────┘
 ```
 
 ### Proceso paso a paso:
@@ -90,7 +99,7 @@ contenedor          Docker               estructurados       en tiempo
    /var/lib/docker/containers/abc123.../abc123...-json.log
    ```
 
-2. **Parser extrae informaci?n**:
+2. **Parser extrae información**:
    ```json
    {
      "log": "GET /api/Products 200 45ms\n",
@@ -114,12 +123,20 @@ contenedor          Docker               estructurados       en tiempo
    }
    ```
 
-4. **Output env?a a Elasticsearch**:
+4. **Output envía a Elasticsearch**:
    ```
    POST http://elasticsearch:9200/filebeat-logs/_doc
    ```
 
-## ?? Componentes Implementados
+## 📦 Requisitos
+
+- Docker
+- Docker Compose
+- Elasticsearch funcionando (Paso 2)
+- Kibana funcionando (Paso 3)
+- Acceso a archivos de logs de Docker
+
+## 📋 Componentes Implementados
 
 ### 1. Servicio en docker-compose.yml
 
@@ -145,26 +162,21 @@ filebeat:
   command: filebeat -e -strict.perms=false
 ```
 
-#### Explicaci?n l?nea por l?nea:
+#### Explicación línea por línea:
 
 **`user: root`**
-```yaml
-user: root
-```
-**?Por qu? root?**:
 - Necesita leer archivos de Docker en `/var/lib/docker/containers`
 - Estos archivos pertenecen a root
 - Sin root: "Permission denied"
+- ⚠️ **Nota de seguridad**: En producción, usar permisos más restrictivos
 
-**?? Nota de seguridad**: En producci?n, usar permisos m?s restrictivos.
+**`volumes` - Los 4 montajes críticos**:
 
-**`volumes` - Los 4 montajes cr?ticos**:
-
-1. **Configuraci?n de Filebeat**:
+1. **Configuración de Filebeat**:
 ```yaml
 - ./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
 ```
-- Monta nuestro archivo de configuraci?n
+- Monta nuestro archivo de configuración
 - `:ro` = read-only (solo lectura)
 - Filebeat lee este archivo al iniciar
 
@@ -172,15 +184,15 @@ user: root
 ```yaml
 - /var/lib/docker/containers:/var/lib/docker/containers:ro
 ```
-**?Qu? hay aqu??**:
+**¿Qué hay ahí?**:
 ```
 /var/lib/docker/containers/
-??? abc123.../
-?   ??? abc123...-json.log  ? Logs de juice-shop
-??? def456.../
-?   ??? def456...-json.log  ? Logs de elasticsearch
-??? ghi789.../
-    ??? ghi789...-json.log  ? Logs de kibana
+├── abc123.../
+│   └── abc123...-json.log  ← Logs de juice-shop
+├── def456.../
+│   └── def456...-json.log  ← Logs de elasticsearch
+└── ghi789.../
+    └── ghi789...-json.log  ← Logs de kibana
 ```
 
 **Formato de los logs**:
@@ -193,7 +205,7 @@ user: root
 ```yaml
 - /var/run/docker.sock:/var/run/docker.sock:ro
 ```
-**?Para qu??**:
+**¿Para qué?**:
 - API de Docker
 - Filebeat consulta metadatos de contenedores:
   - Nombre del contenedor
@@ -203,7 +215,7 @@ user: root
 
 **Ejemplo de uso**:
 ```bash
-# Filebeat pregunta: "?Qu? contenedor tiene ID abc123?"
+# Filebeat pregunta: "¿Qué contenedor tiene ID abc123?"
 # Docker responde: "juice-shop"
 # Filebeat agrega: container.name = "juice-shop"
 ```
@@ -212,14 +224,14 @@ user: root
 ```yaml
 - filebeat-data:/usr/share/filebeat/data
 ```
-**?Qu? almacena?**:
-- **Registry**: Qu? archivos ya ley? y hasta d?nde
-- **Estado**: Posici?n actual en cada archivo
-- **Metadata**: Informaci?n de tracking
+**¿Qué almacena?**:
+- **Registry**: Qué archivos ya leyó y hasta dónde
+- **Estado**: Posición actual en cada archivo
+- **Metadata**: Información de tracking
 
-**?Por qu? es importante?**:
+**¿Por qué es importante?**:
 - Evita duplicados
-- Contin?a donde qued? si se reinicia
+- Continúa donde quedó si se reinicia
 - No pierde datos
 
 **Ejemplo de registry**:
@@ -238,7 +250,7 @@ user: root
 - KIBANA_HOST=http://kibana:5601
 ```
 - Sobrescribe valores en filebeat.yml
-- Permite configuraci?n flexible
+- Permite configuración flexible
 - Usa nombres de servicio Docker
 
 **`depends_on`**:
@@ -250,7 +262,7 @@ depends_on:
 **Orden de inicio**:
 ```
 1. Elasticsearch inicia
-2. Elasticsearch healthcheck pasa ?
+2. Elasticsearch healthcheck pasa ✓
 3. Filebeat inicia
 4. Filebeat conecta inmediatamente
 ```
@@ -306,25 +318,25 @@ logging.files:
   permissions: 0644
 ```
 
-#### Explicaci?n secci?n por secci?n:
+#### Explicación sección por sección:
 
-**`filebeat.inputs`** - ?Qu? leer?:
+**`filebeat.inputs`** - ¿Qué leerá?:
 
 ```yaml
 - type: container
 ```
 - Input especializado para contenedores Docker
 - Entiende el formato JSON de Docker
-- Maneja rotaci?n de logs autom?ticamente
+- Maneja rotación de logs automáticamente
 
 ```yaml
 paths:
   - '/var/lib/docker/containers/*/*.log'
 ```
 - `*/*`: Todos los contenedores, todos los logs
-- Wildcard permite detectar nuevos contenedores autom?ticamente
+- Wildcard permite detectar nuevos contenedores automáticamente
 
-**`processors`** - ?C?mo procesar?:
+**`processors`** - ¿Cómo procesar?:
 
 1. **add_docker_metadata**:
 ```yaml
@@ -339,7 +351,7 @@ paths:
 }
 ```
 
-**Despu?s**:
+**Después**:
 ```json
 {
   "message": "GET /api/Products 200",
@@ -368,7 +380,7 @@ paths:
 }
 ```
 
-**Despu?s**:
+**Después**:
 ```json
 {
   "message": "{\"level\":\"info\",\"msg\":\"Server started\"}",
@@ -398,15 +410,15 @@ Agrega:
 }
 ```
 
-**`output.elasticsearch`** - ?D?nde enviar?:
+**`output.elasticsearch`** - ¿Dónde enviar?:
 
 ```yaml
 hosts: ["${ELASTICSEARCH_HOSTS:elasticsearch:9200}"]
 ```
 - `${VAR:default}`: Lee variable de entorno o usa default
-- Permite configuraci?n flexible
+- Permite configuración flexible
 
-**?ndices din?micos**:
+**Índices dinámicos**:
 ```yaml
 indices:
   - index: "filebeat-juice-shop-%{+yyyy.MM.dd}"
@@ -415,17 +427,17 @@ indices:
   - index: "filebeat-docker-%{+yyyy.MM.dd}"
 ```
 
-**?Qu? hace?**:
-- Si el log es de "juice-shop" ? `filebeat-juice-shop-2025.11.04`
-- Si es de otro contenedor ? `filebeat-docker-2025.11.04`
+**¿Qué hace?**:
+- Si el log es de "juice-shop" → `filebeat-juice-shop-2025.11.04`
+- Si es de otro contenedor → `filebeat-docker-2025.11.04`
 - `%{+yyyy.MM.dd}`: Fecha actual
 
 **Ventajas**:
-- Logs separados por aplicaci?n
-- ?ndices diarios (f?cil de limpiar logs viejos)
-- B?squedas m?s r?pidas (menos datos por ?ndice)
+- Logs separados por aplicación
+- Índices diarios (fácil de limpiar logs viejos)
+- Búsquedas más rápidas (menos datos por índice)
 
-**`setup.kibana`** - Configuraci?n de Kibana:
+**`setup.kibana`** - Configuración de Kibana:
 
 ```yaml
 setup.kibana:
@@ -434,9 +446,9 @@ setup.kibana:
 setup.dashboards.enabled: true
 ```
 
-**?Qu? hace?**:
+**¿Qué hace?**:
 - Filebeat carga dashboards predefinidos en Kibana
-- Crea visualizaciones autom?ticas
+- Crea visualizaciones automáticas
 - Configura Data Views
 
 **Dashboards incluidos**:
@@ -444,161 +456,14 @@ setup.dashboards.enabled: true
 - Container metrics
 - Log analysis
 
-## ?? Flujo Completo de un Log
-
-### Paso a paso detallado:
-
-```
-1. Usuario accede a Juice Shop
-   http://localhost:3000
-   ?
-   ?
-2. Juice Shop procesa request y genera log
-   console.log("GET /api/Products 200 45ms")
-   ?
-   ?
-3. Docker captura stdout y lo escribe en archivo
-   /var/lib/docker/containers/abc123.../abc123...-json.log
-   {"log":"GET /api/Products 200 45ms\n","stream":"stdout","time":"2025-11-04T10:30:00Z"}
-   ?
-   ?
-4. Filebeat detecta nuevo contenido en archivo
-   (monitorea con inotify/fsnotify)
-   ?
-   ?
-5. Filebeat lee la l?nea nueva
-   ?
-   ?
-6. Filebeat parsea JSON de Docker
-   Extrae: log, stream, time
-   ?
-   ?
-7. Filebeat consulta Docker API
-   "?Qu? contenedor es abc123?"
-   Docker responde: "juice-shop"
-   ?
-   ?
-8. Filebeat agrega metadata
-   {
-     "message": "GET /api/Products 200 45ms",
-     "@timestamp": "2025-11-04T10:30:00Z",
-     "container": {
-       "name": "juice-shop",
-       "id": "abc123"
-     },
-     "host": {...}
-   }
-   ?
-   ?
-9. Filebeat determina ?ndice
-   container.name = "juice-shop"
-   ? ?ndice: "filebeat-juice-shop-2025.11.04"
-   ?
-   ?
-10. Filebeat env?a a Elasticsearch
-    POST http://elasticsearch:9200/filebeat-juice-shop-2025.11.04/_doc
-    ?
-    ?
-11. Elasticsearch indexa el documento
-    Analiza texto, crea ?ndice invertido
-    ?
-    ?
-12. Elasticsearch confirma a Filebeat
-    {"result": "created", "_id": "xyz789"}
-    ?
-    ?
-13. Filebeat actualiza registry
-    "Le? hasta posici?n 12345 del archivo abc123...-json.log"
-    ?
-    ?
-14. Usuario abre Kibana
-    http://localhost:5601
-    ?
-    ?
-15. Kibana consulta Elasticsearch
-    GET /filebeat-*/_search
-    ?
-    ?
-16. Elasticsearch retorna resultados
-    ?
-    ?
-17. Kibana muestra log en pantalla
-    ? Usuario ve: "GET /api/Products 200 45ms"
-```
-
-**Tiempo total**: ~1-2 segundos (near real-time)
-
-## ?? Arquitectura Completa Final
-
-```
-????????????????????????????????????????????????????????????????????
-?                        TU M?QUINA                                ?
-?                                                                  ?
-?  Navegador ??? http://localhost:3000 (Juice Shop)              ?
-?  Navegador ??? http://localhost:5601 (Kibana)                  ?
-?                                                                  ?
-????????????????????????????????????????????????????????????????????
-                             ?
-                             ? HTTP
-                             ?
-????????????????????????????????????????????????????????????????????
-?                    DOCKER - elk-network                          ?
-?                                                                  ?
-?  ???????????????????                                            ?
-?  ?  Juice Shop     ?                                            ?
-?  ?  Puerto 3000    ?                                            ?
-?  ?                 ?                                            ?
-?  ? 1. Genera logs  ?                                            ?
-?  ???????????????????                                            ?
-?           ?                                                      ?
-?           ? stdout/stderr                                        ?
-?           ?                                                      ?
-?  ???????????????????????????????????????                       ?
-?  ?  Docker Engine                      ?                       ?
-?  ?  /var/lib/docker/containers/        ?                       ?
-?  ?  ??? abc123.../abc123...-json.log   ?                       ?
-?  ?  2. Escribe logs en archivos        ?                       ?
-?  ???????????????????????????????????????                       ?
-?           ?                                                      ?
-?           ? lee archivos                                         ?
-?           ?                                                      ?
-?  ???????????????????                                            ?
-?  ?   Filebeat      ?                                            ?
-?  ?                 ?                                            ?
-?  ? 3. Lee logs     ?                                            ?
-?  ? 4. Procesa      ?                                            ?
-?  ? 5. Enriquece    ?                                            ?
-?  ???????????????????                                            ?
-?           ?                                                      ?
-?           ? HTTP POST (JSON)                                     ?
-?           ?                                                      ?
-?  ???????????????????         ???????????????????              ?
-?  ? Elasticsearch   ???????????   Kibana        ?              ?
-?  ? Puerto 9200     ?  query  ?   Puerto 5601   ?              ?
-?  ?                 ?         ?                 ?              ?
-?  ? 6. Indexa       ?         ? 8. Consulta     ?              ?
-?  ? 7. Almacena     ?         ? 9. Visualiza    ?              ?
-?  ???????????????????         ???????????????????              ?
-?           ?                                                      ?
-?           ?                                                      ?
-?  ???????????????????                                            ?
-?  ?  Volumen        ?                                            ?
-?  ?  elasticsearch- ?                                            ?
-?  ?  data           ?                                            ?
-?  ?                 ?                                            ?
-?  ? Persistencia    ?                                            ?
-?  ???????????????????                                            ?
-????????????????????????????????????????????????????????????????????
-```
-
-## ? Verificaci?n
+## 🚀 Instalación y Ejecución
 
 ### 1. Levantar todos los servicios
 ```bash
 docker compose up -d
 ```
 
-### 2. Verificar que Filebeat inici? correctamente
+### 2. Verificar que Filebeat inició correctamente
 ```bash
 docker compose logs filebeat | grep -i "elasticsearch\|kibana\|pipeline"
 ```
@@ -627,7 +492,7 @@ done
 sleep 30
 ```
 
-### 5. Verificar ?ndices en Elasticsearch
+### 5. Verificar índices en Elasticsearch
 ```bash
 curl 'http://localhost:9200/_cat/indices?v'
 ```
@@ -639,7 +504,7 @@ yellow open   filebeat-juice-shop-2025.11.04     10
 yellow open   filebeat-docker-2025.11.04         50
 ```
 
-### 6. Ver un log espec?fico
+### 6. Ver un log específico
 ```bash
 curl -X GET "http://localhost:9200/filebeat-juice-shop-*/_search?size=1&pretty"
 ```
@@ -670,24 +535,153 @@ curl -X GET "http://localhost:9200/filebeat-juice-shop-*/_search?size=1&pretty"
 ### 7. Verificar en Kibana
 
 1. Abre http://localhost:5601
-2. Ve a **Management** ? **Stack Management** ? **Data Views**
-3. Deber?as ver:
-   - `filebeat-*` (creado autom?ticamente)
-4. Ve a **Analytics** ? **Discover**
+2. Ve a **Management** → **Stack Management** → **Data Views**
+3. Deberías ver:
+   - `filebeat-*` (creado automáticamente)
+4. Ve a **Analytics** → **Discover**
 5. Selecciona `filebeat-*`
 6. Filtra: `container.name: "juice-shop"`
-7. ?Deber?as ver tus logs!
+7. ¡Deberías ver tus logs!
 
-## ?? Conceptos Clave
+## 🔄 Flujo Completo de un Log
+
+### Paso a paso detallado:
+
+```
+1. Usuario accede a Juice Shop
+   http://localhost:3000
+   ↓
+2. Juice Shop procesa request y genera log
+   console.log("GET /api/Products 200 45ms")
+   ↓
+3. Docker captura stdout y lo escribe en archivo
+   /var/lib/docker/containers/abc123.../abc123...-json.log
+   {"log":"GET /api/Products 200 45ms\n","stream":"stdout","time":"2025-11-04T10:30:00Z"}
+   ↓
+4. Filebeat detecta nuevo contenido en archivo
+   (monitorea con inotify/fsnotify)
+   ↓
+5. Filebeat lee la línea nueva
+   ↓
+6. Filebeat parsea JSON de Docker
+   Extrae: log, stream, time
+   ↓
+7. Filebeat consulta Docker API
+   "¿Qué contenedor es abc123?"
+   Docker responde: "juice-shop"
+   ↓
+8. Filebeat agrega metadata
+   {
+     "message": "GET /api/Products 200 45ms",
+     "@timestamp": "2025-11-04T10:30:00Z",
+     "container": {
+       "name": "juice-shop",
+       "id": "abc123"
+     },
+     "host": {...}
+   }
+   ↓
+9. Filebeat determina índice
+   container.name = "juice-shop"
+   → índice: "filebeat-juice-shop-2025.11.04"
+   ↓
+10. Filebeat envía a Elasticsearch
+    POST http://elasticsearch:9200/filebeat-juice-shop-2025.11.04/_doc
+    ↓
+11. Elasticsearch indexa el documento
+    Analiza texto, crea índice invertido
+    ↓
+12. Elasticsearch confirma a Filebeat
+    {"result": "created", "_id": "xyz789"}
+    ↓
+13. Filebeat actualiza registry
+    "Leyó hasta posición 12345 del archivo abc123...-json.log"
+    ↓
+14. Usuario abre Kibana
+    http://localhost:5601
+    ↓
+15. Kibana consulta Elasticsearch
+    GET /filebeat-*/_search
+    ↓
+16. Elasticsearch retorna resultados
+    ↓
+17. Kibana muestra log en pantalla
+    → Usuario ve: "GET /api/Products 200 45ms"
+```
+
+**Tiempo total**: ~1-2 segundos (near real-time)
+
+## 🏗️ Arquitectura Completa Final
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        TU MÁQUINA                                           │
+│                                                                             │
+│  Navegador ←→ http://localhost:3000 (Juice Shop)                          │
+│  Navegador ←→ http://localhost:5601 (Kibana)                              │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+                              │
+                              │ HTTP
+                              │
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    DOCKER - elk-network                                     │
+│                                                                             │
+│  ┌──────────────────────┐                                                  │
+│  │  Juice Shop          │                                                  │
+│  │  Puerto 3000         │                                                  │
+│  │                      │                                                  │
+│  │ 1. Genera logs       │                                                  │
+│  └──────────────────────┘                                                  │
+│           │                                                                 │
+│           │ stdout/stderr                                                   │
+│           │                                                                 │
+│  ┌──────────────────────────────────────────────┐                         │
+│  │  Docker Engine                                │                         │
+│  │  /var/lib/docker/containers/                  │                         │
+│  │  ├── abc123.../abc123...-json.log             │                         │
+│  │  2. Escribe logs en archivos                  │                         │
+│  └──────────────────────────────────────────────┘                         │
+│           │                                                                 │
+│           │ lee archivos                                                    │
+│           │                                                                 │
+│  ┌──────────────────────┐         ┌──────────────────────┐              │
+│  │   Filebeat           │────────▶│ Elasticsearch        │              │
+│  │                      │         │ Puerto 9200          │              │
+│  │ 3. Lee logs          │  HTTP   │                      │              │
+│  │ 4. Procesa           │  POST   │ 6. Indexa            │              │
+│  │ 5. Enriquece         │  (JSON) │ 7. Almacena          │              │
+│  └──────────────────────┘         └──────────────────────┘              │
+│                                              │                             │
+│                                              │ query                       │
+│                                    ┌──────────────────────┐              │
+│                                    │   Kibana             │              │
+│                                    │   Puerto 5601        │              │
+│                                    │                      │              │
+│                                    │ 8. Consulta          │              │
+│                                    │ 9. Visualiza         │              │
+│                                    └──────────────────────┘              │
+│                                              │                             │
+│  ┌──────────────────────┐                                                   │
+│  │  Volumen             │                                                   │
+│  │  elasticsearch-      │                                                   │
+│  │  data                │                                                   │
+│  │                      │                                                   │
+│  │ Persistencia         │                                                   │
+│  └──────────────────────┘                                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+## 💡 Conceptos Clave
 
 ### 1. **Registry de Filebeat**
-- Archivo que trackea qu? se ha le?do
-- Ubicaci?n: `/usr/share/filebeat/data/registry`
+- Archivo que trackea qué se ha leído
+- Ubicación: `/usr/share/filebeat/data/registry`
 - Evita duplicados
-- Permite reanudar despu?s de reinicio
+- Permite reanudar después de reinicio
 
 ### 2. **Backpressure**
-- Si Elasticsearch est? lento, Filebeat espera
+- Si Elasticsearch está lento, Filebeat espera
 - No pierde datos
 - Buffer interno para almacenar temporalmente
 
@@ -700,16 +694,39 @@ curl -X GET "http://localhost:9200/filebeat-juice-shop-*/_search?size=1&pretty"
 - `container`: Para logs de Docker
 - `log`: Para archivos normales
 - `syslog`: Para syslog
-- `stdin`: Para entrada est?ndar
+- `stdin`: Para entrada estándar
 
-## ?? Troubleshooting
+### 5. **Processors**
+- Transforman datos antes de enviarlos
+- Ejemplos: parse JSON, add fields, filter
+- Se ejecutan en orden secuencial
+
+### 6. **Índices dinámicos**
+- Crea índices basados en condiciones
+- Útil para separar logs por aplicación
+- Facilita mantenimiento y búsquedas
+
+## ➡️ Siguiente Paso
+
+**Estado actual**:
+- ✅ Juice Shop genera logs
+- ✅ Filebeat lee y procesa logs
+- ✅ Elasticsearch almacena logs
+- ✅ Kibana puede visualizar logs
+- ⚠️ **SIGUIENTE**: Configurar visualizaciones en Kibana
+
+**Próximo paso**: Ver `PASO_5_VISUALIZACION_KIBANA.md`
+
+El sistema ELK está completo y funcional. Ahora puedes crear dashboards, gráficos y visualizaciones personalizadas para analizar los logs recolectados.
+
+## 🔧 Troubleshooting
 
 ### Problema: Filebeat no encuentra logs
 ```bash
-# Verificar que el volumen est? montado
+# Verificar que el volumen está montado
 docker exec filebeat ls -la /var/lib/docker/containers
 
-# Deber?a mostrar directorios
+# Debería mostrar directorios
 ```
 
 ### Problema: Permission denied
@@ -717,10 +734,10 @@ docker exec filebeat ls -la /var/lib/docker/containers
 # Verificar que corre como root
 docker compose ps
 
-# USER deber?a ser "root"
+# USER debería ser "root"
 ```
 
-### Problema: No se crean ?ndices
+### Problema: No se crean índices
 ```bash
 # Ver logs de Filebeat
 docker compose logs filebeat | grep -i error
@@ -731,37 +748,53 @@ docker exec filebeat curl http://elasticsearch:9200
 
 ### Problema: Logs duplicados
 - Normal en reinicios
-- Elasticsearch deduplica autom?ticamente
-- No es un problema cr?tico
+- Elasticsearch deduplica automáticamente
+- No es un problema crítico
 
-## ?? Siguiente Paso
+### Problema: Filebeat no inicia
+```bash
+# Verificar logs completos
+docker compose logs filebeat
 
-Con Filebeat funcionando, el sistema ELK est? completo y funcional. El siguiente paso es **configurar visualizaciones en Kibana** para aprovechar al m?ximo los datos recolectados.
-
-## ?? Resumen
-
-? **Logrado**:
-- Filebeat corriendo y conectado
-- Leyendo logs de todos los contenedores Docker
-- Procesando y enriqueciendo logs
-- Enviando a Elasticsearch correctamente
-- ?ndices creados autom?ticamente
-
-? **Verificado**:
-- Logs de Juice Shop en Elasticsearch
-- ?ndices con formato correcto
-- Metadata de contenedor agregada
-- Visible en Kibana
-
-? **Entendido**:
-- Flujo completo de un log
-- C?mo Filebeat lee archivos de Docker
-- Procesamiento y enriquecimiento
-- Comunicaci?n entre todos los componentes
-- Arquitectura completa del sistema ELK
-
-? **Sistema Completo**:
+# Verificar que Elasticsearch está healthy
+docker compose ps elasticsearch
 ```
-Juice Shop ? Docker ? Filebeat ? Elasticsearch ? Kibana ? Usuario
-   ?         ?        ?           ?             ?        ?
+
+### Problema: No veo logs en Kibana
+```bash
+# Verificar que los índices existen
+curl 'http://localhost:9200/_cat/indices?v'
+
+# Verificar que Filebeat está enviando datos
+docker compose logs filebeat | grep -i "publish"
 ```
+
+## ✅ Resumen
+
+### Logrado
+- [x] Filebeat corriendo y conectado
+- [x] Leyendo logs de todos los contenedores Docker
+- [x] Procesando y enriqueciendo logs
+- [x] Enviando a Elasticsearch correctamente
+- [x] Índices creados automáticamente
+
+### Verificado
+- [x] Logs de Juice Shop en Elasticsearch
+- [x] Índices con formato correcto
+- [x] Metadata de contenedor agregada
+- [x] Visible en Kibana
+
+### Entendido
+- [x] Flujo completo de un log
+- [x] Cómo Filebeat lee archivos de Docker
+- [x] Procesamiento y enriquecimiento
+- [x] Comunicación entre todos los componentes
+- [x] Arquitectura completa del sistema ELK
+
+### Sistema Completo
+```
+Juice Shop → Docker → Filebeat → Elasticsearch → Kibana → Usuario
+    ✓         ✓         ✓            ✓             ✓        ✓
+```
+
+<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>

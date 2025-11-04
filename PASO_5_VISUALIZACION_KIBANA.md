@@ -1,60 +1,116 @@
-# Paso 5: Configurar Visualizaci?n en Kibana
+# Paso 5: Configurar Visualización en Kibana
+<a id="readme-top"></a>
 
-## ?? Objetivo
-Configurar Kibana para visualizar y analizar los logs recolectados, creando Data Views, b?squedas, visualizaciones y dashboards.
+<!--
+PROJECT DESCRIPTION
+-->
+## 📜 Descripción
 
-## ?? Relaci?n con el sistema completo
+Configurar Kibana para visualizar y analizar los logs recolectados, creando Data Views, búsquedas, visualizaciones y dashboards.
+
+**Kibana** es la interfaz de visualización oficial para Elasticsearch. En este paso, configuraremos todas las capacidades de visualización de Kibana para interactuar con los datos almacenados en Elasticsearch.
+
+### Características principales que configuraremos:
+
+1. **Data Views**: Define qué índices de Elasticsearch mostrar
+2. **Discover**: Explora logs en tiempo real con búsquedas interactivas
+3. **Visualize**: Crea gráficos individuales (barras, líneas, pie charts, tablas)
+4. **Dashboard**: Combina múltiples visualizaciones en una vista unificada
+5. **Dev Tools**: Consola para queries directas a Elasticsearch
+
+### ¿Por qué es importante este paso?
+
+**Sin configuración** (Kibana básico):
+- Kibana está corriendo pero no sabe qué datos mostrar
+- No hay visualizaciones creadas
+- No hay dashboards para monitoreo
+- Difícil analizar logs sin herramientas visuales
+
+**Con configuración completa**:
+- Data Views configurados para todos los logs
+- Visualizaciones interactivas creadas
+- Dashboards profesionales para monitoreo
+- Búsquedas guardadas para análisis rápido
+- Herramientas de debugging disponibles
+
+## 🔗 Relación con pasos anteriores
 
 ### Estado actual del flujo:
 ```
-? Juice Shop ? ? Docker ? ? Filebeat ? ? Elasticsearch ? ? Kibana (sin configurar)
+Juice Shop → Docker → Filebeat → Elasticsearch → Kibana (sin configurar)
 ```
 
 **Tenemos**:
-- Logs gener?ndose en Juice Shop
-- Filebeat recolectando y enviando
-- Elasticsearch almacenando (555+ documentos)
-- Kibana corriendo pero sin configuraci?n
+- ✅ Logs generándose en Juice Shop (Paso 1)
+- ✅ Elasticsearch almacenando logs (Paso 2)
+- ✅ Kibana corriendo y conectado (Paso 3)
+- ✅ Filebeat recolectando y enviando (Paso 4)
+- ✅ Elasticsearch almacenando (555+ documentos)
 
 **Nos falta**:
-- Decirle a Kibana qu? ?ndices mostrar
-- Crear b?squedas ?tiles
-- Crear visualizaciones
-- Armar dashboards
+- ❌ Decirle a Kibana qué índices mostrar
+- ❌ Crear búsquedas útiles
+- ❌ Crear visualizaciones
+- ❌ Armar dashboards
 
-## ?? Conceptos de Kibana
+### Flujo completo después de este paso:
+```
+┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐   ┌──────────────┐
+│ Juice Shop  │──▶│   Filebeat   │──▶│ Elasticsearch│──▶│   Kibana     │──▶│   Usuario    │
+│              │   │              │   │              │   │              │   │              │
+│ Genera logs  │   │ Recolecta    │   │ Almacena     │   │ Visualiza    │   │ Ve dashboards│
+│              │   │ Procesa      │   │ Indexa       │   │ Crea gráficos│   │ Analiza      │
+└──────────────┘   └──────────────┘   └──────────────┘   └──────────────┘   └──────────────┘
+```
+
+## 📦 Requisitos
+
+- Docker
+- Docker Compose
+- Kibana funcionando (Paso 3)
+- Elasticsearch funcionando (Paso 2)
+- Filebeat funcionando y enviando datos (Paso 4)
+- Navegador web
+
+## 📋 Conceptos de Kibana
 
 ### 1. **Data View** (antes Index Pattern)
-- Define QU? datos de Elasticsearch mostrar
-- Usa wildcards: `filebeat-*` muestra todos los ?ndices filebeat
+- Define **QUÉ** datos de Elasticsearch mostrar
+- Usa wildcards: `filebeat-*` muestra todos los índices filebeat
 - Necesario antes de usar Discover, Visualize o Dashboard
+- Reemplaza el concepto antiguo de "Index Pattern"
 
 ### 2. **Discover**
 - Explorador de logs en tiempo real
-- B?squeda con KQL (Kibana Query Language)
+- Búsqueda con KQL (Kibana Query Language)
 - Filtros interactivos
-- Vista de tabla con campos
+- Vista de tabla con campos personalizables
+- Auto-refresh para monitoreo en tiempo real
 
 ### 3. **Visualize**
-- Crea gr?ficos individuales
-- Tipos: l?neas, barras, pie, mapas, m?tricas
+- Crea gráficos individuales
+- Tipos: líneas, barras, pie, mapas, métricas, tablas
 - Basados en agregaciones de Elasticsearch
+- Reutilizables en múltiples dashboards
 
 ### 4. **Dashboard**
-- Combina m?ltiples visualizaciones
+- Combina múltiples visualizaciones
 - Vista general del sistema
 - Interactivo (filtros afectan todas las visualizaciones)
+- Permite compartir vistas con otros usuarios
 
 ### 5. **Dev Tools**
 - Consola para queries directas a Elasticsearch
-- ?til para debugging
+- Útil para debugging
 - Sintaxis JSON
+- Ejecuta queries de Elasticsearch directamente
 
-## ??? Configuraci?n Paso a Paso
+## 🚀 Configuración Paso a Paso
 
 ### PARTE 1: Crear Data View
 
 #### 1.1 Acceder a Kibana
+
 ```
 http://localhost:5601
 ```
@@ -62,35 +118,36 @@ http://localhost:5601
 **Primera vez**:
 - Puede mostrar pantalla de bienvenida
 - Click en "Explore on my own"
-- O ir directamente al men?
+- O ir directamente al menú
 
 #### 1.2 Navegar a Data Views
+
 ```
-? Menu ? Management ? Stack Management ? Data Views
+☰ Menu → Management → Stack Management → Data Views
 ```
 
 **Ruta completa**:
-1. Click en el ?cono de men? (?) arriba a la izquierda
+1. Click en el ícono de menú (☰) arriba a la izquierda
 2. Scroll hasta "Management"
 3. Click en "Stack Management"
-4. En el men? lateral, bajo "Kibana", click en "Data Views"
+4. En el menú lateral, bajo "Kibana", click en "Data Views"
 
 #### 1.3 Crear Data View para todos los logs
 
 Click en **"Create data view"**
 
-**Configuraci?n**:
+**Configuración**:
 ```
 Name: Todos los Logs
 Index pattern: filebeat-*
 Timestamp field: @timestamp
 ```
 
-**Explicaci?n**:
-- `filebeat-*`: Incluye todos los ?ndices que empiecen con "filebeat-"
-  - filebeat-docker-2025.11.04 ?
-  - filebeat-juice-shop-2025.11.04 ?
-  - filebeat-docker-2025.11.05 ? (ma?ana)
+**Explicación**:
+- `filebeat-*`: Incluye todos los índices que empiecen con "filebeat-"
+  - `filebeat-docker-2025.11.04`
+  - `filebeat-juice-shop-2025.11.04`
+  - `filebeat-docker-2025.11.05` (mañana)
 - `@timestamp`: Campo de tiempo para ordenar logs
 
 Click **"Save data view to Kibana"**
@@ -99,58 +156,61 @@ Click **"Save data view to Kibana"**
 
 Click en **"Create data view"** nuevamente
 
-**Configuraci?n**:
+**Configuración**:
 ```
 Name: Juice Shop Logs
 Index pattern: filebeat-juice-shop-*
 Timestamp field: @timestamp
 ```
 
-**?Por qu? crear este adicional?**:
-- Filtra autom?ticamente solo logs de Juice Shop
-- B?squedas m?s r?pidas (menos datos)
-- Visualizaciones espec?ficas de la aplicaci?n
+**¿Por qué crear este adicional?**:
+- Filtra automáticamente solo logs de Juice Shop
+- Búsquedas más rápidas (menos datos)
+- Visualizaciones específicas de la aplicación
 
 Click **"Save data view to Kibana"**
 
 ### PARTE 2: Explorar Logs en Discover
 
 #### 2.1 Acceder a Discover
+
 ```
-? Menu ? Analytics ? Discover
+☰ Menu → Analytics → Discover
 ```
 
 #### 2.2 Seleccionar Data View
-- En la parte superior, ver?s un dropdown con el Data View actual
+
+- En la parte superior, verás un dropdown con el Data View actual
 - Click y selecciona "Todos los Logs"
 
 #### 2.3 Ajustar rango de tiempo
+
 - Esquina superior derecha: selector de tiempo
 - Click en el calendario
 - Selecciona "Last 1 hour" o "Last 15 minutes"
 - Click "Apply"
 
-**?Por qu? es importante?**:
-- Por defecto muestra ?ltimos 15 minutos
-- Si no ves logs, ampl?a el rango
-- Logs m?s antiguos pueden estar en ?ndices de d?as anteriores
+**¿Por qué es importante?**:
+- Por defecto muestra últimos 15 minutos
+- Si no ves logs, amplía el rango
+- Logs más antiguos pueden estar en índices de días anteriores
 
 #### 2.4 Ver la tabla de logs
 
 **Columnas por defecto**:
-- `@timestamp`: Cu?ndo ocurri?
+- `@timestamp`: Cuándo ocurrió
 - `_source`: Documento completo (JSON)
 
 **Expandir un log**:
-1. Click en el s?mbolo `>` a la izquierda de un log
-2. Ver?s todos los campos:
+1. Click en el símbolo `>` a la izquierda de un log
+2. Verás todos los campos:
    - `message`: Mensaje del log
    - `container.name`: Nombre del contenedor
    - `container.id`: ID del contenedor
    - `host.name`: Host donde corre
    - etc.
 
-#### 2.5 Agregar columnas ?tiles
+#### 2.5 Agregar columnas útiles
 
 Click en **"+ Add field"** arriba de la tabla
 
@@ -159,13 +219,13 @@ Agrega estos campos:
 2. `message`
 3. `log.level` (si existe)
 
-**Resultado**: Tabla m?s legible con informaci?n clave
+**Resultado**: Tabla más legible con información clave
 
-### PARTE 3: B?squedas con KQL
+### PARTE 3: Búsquedas con KQL
 
-#### 3.1 B?squeda b?sica
+#### 3.1 Búsqueda básica
 
-En la barra de b?squeda arriba:
+En la barra de búsqueda arriba:
 
 **Ver solo logs de Juice Shop**:
 ```
@@ -182,7 +242,7 @@ message: *error*
 container.name: "elasticsearch"
 ```
 
-#### 3.2 B?squedas combinadas
+#### 3.2 Búsquedas combinadas
 
 **Errores de Juice Shop**:
 ```
@@ -199,17 +259,17 @@ container.name: ("juice-shop" OR "kibana")
 NOT container.name: "filebeat"
 ```
 
-#### 3.3 B?squedas por tiempo
+#### 3.3 Búsquedas por tiempo
 
-**Logs de la ?ltima hora**:
+**Logs de la última hora**:
 - Usa el selector de tiempo (no KQL)
 
-**Logs de un d?a espec?fico**:
+**Logs de un día específico**:
 ```
 @timestamp >= "2025-11-04" AND @timestamp < "2025-11-05"
 ```
 
-#### 3.4 Guardar b?squeda
+#### 3.4 Guardar búsqueda
 
 1. Click en "Save" arriba
 2. Nombre: "Errores de Juice Shop"
@@ -217,22 +277,23 @@ NOT container.name: "filebeat"
 
 **Uso posterior**:
 - Click en "Open" arriba
-- Selecciona tu b?squeda guardada
+- Selecciona tu búsqueda guardada
 
 ### PARTE 4: Crear Visualizaciones
 
 #### 4.1 Acceder a Visualize
+
 ```
-? Menu ? Analytics ? Visualize Library
+☰ Menu → Analytics → Visualize Library
 ```
 
-#### 4.2 Crear visualizaci?n: Logs por Contenedor
+#### 4.2 Crear visualización: Logs por Contenedor
 
 Click **"Create visualization"**
 
-**Tipo**: Pie Chart (gr?fico de pastel)
+**Tipo**: Pie Chart (gráfico de pastel)
 
-**Configuraci?n**:
+**Configuración**:
 1. **Data view**: Selecciona "Todos los Logs"
 2. **Time range**: Last 1 hour
 3. **Slice by**: 
@@ -240,68 +301,69 @@ Click **"Create visualization"**
    - Selecciona `container.name.keyword`
 4. **Metric**: Count (por defecto)
 
-**Resultado**: Gr?fico circular mostrando distribuci?n de logs por contenedor
+**Resultado**: Gráfico circular mostrando distribución de logs por contenedor
 
 Click **"Save"**:
-- T?tulo: "Distribuci?n de Logs por Contenedor"
+- Título: "Distribución de Logs por Contenedor"
 - Click "Save and return"
 
-#### 4.3 Crear visualizaci?n: Logs en el Tiempo
+#### 4.3 Crear visualización: Logs en el Tiempo
 
 Click **"Create visualization"**
 
-**Tipo**: Line Chart (gr?fico de l?neas)
+**Tipo**: Line Chart (gráfico de líneas)
 
-**Configuraci?n**:
+**Configuración**:
 1. **Data view**: "Todos los Logs"
 2. **Time range**: Last 1 hour
-3. **Horizontal axis**: `@timestamp` (autom?tico)
+3. **Horizontal axis**: `@timestamp` (automático)
 4. **Vertical axis**: Count
 5. **Break down by**: `container.name.keyword`
 
-**Resultado**: L?neas de tiempo mostrando volumen de logs por contenedor
+**Resultado**: Líneas de tiempo mostrando volumen de logs por contenedor
 
 Click **"Save"**:
-- T?tulo: "Volumen de Logs en el Tiempo"
+- Título: "Volumen de Logs en el Tiempo"
 
-#### 4.4 Crear visualizaci?n: Top Mensajes
+#### 4.4 Crear visualización: Top Mensajes
 
 Click **"Create visualization"**
 
 **Tipo**: Table (tabla)
 
-**Configuraci?n**:
+**Configuración**:
 1. **Data view**: "Juice Shop Logs"
 2. **Rows**: 
    - `message.keyword`
    - Top 10 values
 3. **Metric**: Count
 
-**Resultado**: Tabla con los 10 mensajes m?s frecuentes de Juice Shop
+**Resultado**: Tabla con los 10 mensajes más frecuentes de Juice Shop
 
 Click **"Save"**:
-- T?tulo: "Top 10 Mensajes de Juice Shop"
+- Título: "Top 10 Mensajes de Juice Shop"
 
-#### 4.5 Crear visualizaci?n: M?trica Total
+#### 4.5 Crear visualización: Métrica Total
 
 Click **"Create visualization"**
 
-**Tipo**: Metric (n?mero grande)
+**Tipo**: Metric (número grande)
 
-**Configuraci?n**:
+**Configuración**:
 1. **Data view**: "Todos los Logs"
 2. **Metric**: Count
 
-**Resultado**: N?mero grande mostrando total de logs
+**Resultado**: Número grande mostrando total de logs
 
 Click **"Save"**:
-- T?tulo: "Total de Logs"
+- Título: "Total de Logs"
 
 ### PARTE 5: Crear Dashboard
 
 #### 5.1 Acceder a Dashboards
+
 ```
-? Menu ? Analytics ? Dashboard
+☰ Menu → Analytics → Dashboard
 ```
 
 #### 5.2 Crear nuevo dashboard
@@ -314,7 +376,7 @@ Click **"Add from library"**
 
 Selecciona las visualizaciones que creaste:
 1. "Total de Logs"
-2. "Distribuci?n de Logs por Contenedor"
+2. "Distribución de Logs por Contenedor"
 3. "Volumen de Logs en el Tiempo"
 4. "Top 10 Mensajes de Juice Shop"
 
@@ -323,44 +385,45 @@ Click **"Add"**
 #### 5.4 Organizar dashboard
 
 **Redimensionar**:
-- Arrastra las esquinas de cada visualizaci?n
+- Arrastra las esquinas de cada visualización
 
 **Mover**:
-- Arrastra desde el t?tulo
+- Arrastra desde el título
 
 **Sugerencia de layout**:
 ```
-???????????????????????????????????????????????
-?  Total de Logs    ?  Distribuci?n (Pie)     ?
-???????????????????????????????????????????????
-?  Volumen en el Tiempo (Line)               ?
-???????????????????????????????????????????????
-?  Top 10 Mensajes (Table)                   ?
-???????????????????????????????????????????????
+┌─────────────────────────────────────────┐
+│  Total de Logs    │  Distribución (Pie) │
+├─────────────────────────────────────────┤
+│  Volumen en el Tiempo (Line)           │
+├─────────────────────────────────────────┤
+│  Top 10 Mensajes (Table)               │
+└─────────────────────────────────────────┘
 ```
 
 #### 5.5 Guardar dashboard
 
 Click **"Save"**:
-- T?tulo: "Overview de Logs del Sistema"
-- Descripci?n: "Dashboard principal mostrando logs de todos los contenedores"
+- Título: "Overview de Logs del Sistema"
+- Descripción: "Dashboard principal mostrando logs de todos los contenedores"
 - Click "Save"
 
 ### PARTE 6: Usar Dev Tools
 
 #### 6.1 Acceder a Dev Tools
+
 ```
-? Menu ? Management ? Dev Tools
+☰ Menu → Management → Dev Tools
 ```
 
-#### 6.2 Queries ?tiles
+#### 6.2 Queries útiles
 
 **Ver salud de Elasticsearch**:
 ```json
 GET /_cluster/health
 ```
 
-**Ver todos los ?ndices**:
+**Ver todos los índices**:
 ```json
 GET /_cat/indices?v
 ```
@@ -393,7 +456,7 @@ GET /filebeat-*/_search
 }
 ```
 
-**Logs de las ?ltimas 5 minutos**:
+**Logs de las últimas 5 minutos**:
 ```json
 GET /filebeat-*/_search
 {
@@ -407,37 +470,37 @@ GET /filebeat-*/_search
 }
 ```
 
-## ?? Casos de Uso Pr?cticos
+## 💡 Casos de Uso Prácticos
 
 ### Caso 1: Monitorear errores en tiempo real
 
 **Objetivo**: Ver errores de Juice Shop inmediatamente
 
 **Pasos**:
-1. Discover ? "Juice Shop Logs"
-2. B?squeda: `message: *error* OR message: *ERROR*`
+1. Discover → "Juice Shop Logs"
+2. Búsqueda: `message: *error* OR message: *ERROR*`
 3. Time range: "Last 15 minutes"
 4. Habilitar auto-refresh (arriba a la derecha)
 5. Selecciona "10 seconds"
 
 **Resultado**: Tabla que se actualiza cada 10 segundos con nuevos errores
 
-### Caso 2: Analizar tr?fico HTTP
+### Caso 2: Analizar tráfico HTTP
 
-**Objetivo**: Ver qu? endpoints se est?n usando
+**Objetivo**: Ver qué endpoints se están usando
 
 **Pasos**:
-1. Discover ? "Juice Shop Logs"
-2. B?squeda: `message: *GET* OR message: *POST*`
-3. Crear visualizaci?n tipo "Data Table"
-4. Extraer m?todo y ruta con regex (avanzado)
+1. Discover → "Juice Shop Logs"
+2. Búsqueda: `message: *GET* OR message: *POST*`
+3. Crear visualización tipo "Data Table"
+4. Extraer método y ruta con regex (avanzado)
 
 ### Caso 3: Comparar volumen entre contenedores
 
-**Objetivo**: Ver qu? contenedor genera m?s logs
+**Objetivo**: Ver qué contenedor genera más logs
 
 **Pasos**:
-1. Visualize ? Bar Chart
+1. Visualize → Bar Chart
 2. Horizontal axis: `container.name.keyword`
 3. Vertical axis: Count
 4. Agregar al dashboard
@@ -446,7 +509,7 @@ GET /filebeat-*/_search
 
 **Objetivo**: Notificar cuando hay muchos errores
 
-**Nota**: Requiere configuraci?n avanzada (Watcher/Alerting)
+**Nota**: Requiere configuración avanzada (Watcher/Alerting)
 
 **Concepto**:
 ```
@@ -454,64 +517,64 @@ IF (count of logs with "error" in last 5 minutes) > 10
 THEN send notification
 ```
 
-## ?? Arquitectura Completa con Usuario
+## 🏗️ Arquitectura Completa con Usuario
 
 ```
-????????????????????????????????????????????????????????????????????
-?                         USUARIO                                  ?
-?                                                                  ?
-?  1. Usa Juice Shop ? Genera logs                                ?
-?  2. Abre Kibana ? Ve logs en tiempo real                        ?
-?                                                                  ?
-????????????????????????????????????????????????????????????????????
-             ?                                 ?
-             ? HTTP                            ? HTTP
-             ?                                 ?
-????????????????????????            ????????????????????????
-?   Juice Shop         ?            ?   Kibana             ?
-?   Puerto 3000        ?            ?   Puerto 5601        ?
-?                      ?            ?                      ?
-? Genera logs          ?            ? - Discover           ?
-????????????????????????            ? - Visualize          ?
-           ?                        ? - Dashboard          ?
-           ? stdout/stderr          ? - Dev Tools          ?
-           ?                        ????????????????????????
-????????????????????????                      ?
-?  Docker Engine       ?                      ? Queries
-?  Captura logs        ?                      ?
-????????????????????????                      ?
-           ?                                  ?
-           ? Archivos .log                    ?
-           ?                                  ?
-????????????????????????                      ?
-?   Filebeat           ?                      ?
-?   Recolecta          ?                      ?
-?   Procesa            ?                      ?
-?   Enriquece          ?                      ?
-????????????????????????                      ?
-           ?                                  ?
-           ? HTTP POST (JSON)                 ?
-           ?                                  ?
-????????????????????????                      ?
-?   Elasticsearch      ????????????????????????
-?   Puerto 9200        ?
-?                      ?
-? - Indexa             ?
-? - Almacena           ?
-? - Busca              ?
-? - Agrega             ?
-????????????????????????
-           ?
-           ?
-????????????????????????
-?  Volumen             ?
-?  Persistencia        ?
-????????????????????????
+┌─────────────────────────────────────────────────────────────────────────┐
+│                         USUARIO                                        │
+│                                                                         │
+│  1. Usa Juice Shop → Genera logs                                       │
+│  2. Abre Kibana → Ve logs en tiempo real                               │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+             │                                 │
+             │ HTTP                            │ HTTP
+             │                                 │
+┌────────────┴──────────┐            ┌────────┴──────────┐
+│   Juice Shop          │            │   Kibana           │
+│   Puerto 3000        │            │   Puerto 5601      │
+│                      │            │                    │
+│ Genera logs          │            │ - Discover         │
+└──────────────────────┘            │ - Visualize       │
+         │                          │ - Dashboard       │
+         │ stdout/stderr            │ - Dev Tools       │
+         │                          └────────────────────┘
+┌────────┴──────────┐                      │
+│  Docker Engine    │                      │ Queries
+│  Captura logs     │                      │
+└───────────────────┘                      │
+         │                                  │
+         │ Archivos .log                    │
+         │                                  │
+┌────────┴──────────┐                      │
+│   Filebeat        │                      │
+│   Recolecta       │                      │
+│   Procesa         │                      │
+│   Enriquece       │                      │
+└───────────────────┘                      │
+         │                                  │
+         │ HTTP POST (JSON)                 │
+         │                                  │
+┌────────┴──────────┐                      │
+│   Elasticsearch   │◀─────────────────────┘
+│   Puerto 9200     │
+│                   │
+│ - Indexa          │
+│ - Almacena        │
+│ - Busca           │
+│ - Agrega          │
+└───────────────────┘
+         │
+         │
+┌────────┴──────────┐
+│  Volumen          │
+│  Persistencia     │
+└───────────────────┘
 ```
 
-## ? Verificaci?n
+## ✅ Verificación
 
-### Checklist de configuraci?n:
+### Checklist de configuración:
 
 - [ ] Data View "Todos los Logs" creado
 - [ ] Data View "Juice Shop Logs" creado
@@ -532,21 +595,61 @@ done
 ```
 
 **2. Ver en Kibana**:
-- Discover ? Deber?as ver nuevos logs apareciendo
-- Dashboard ? N?meros deber?an aumentar
+- Discover → Deberías ver nuevos logs apareciendo
+- Dashboard → Números deberían aumentar
 
 **3. Probar filtros**:
 - Busca: `container.name: "juice-shop"`
-- Deber?as ver solo logs de Juice Shop
+- Deberías ver solo logs de Juice Shop
 
-## ?? Conceptos Avanzados
+## 🔧 Troubleshooting
+
+### Problema: No veo logs en Discover
+
+**Posibles causas**:
+1. **Rango de tiempo incorrecto**
+   - Solución: Amplía a "Last 24 hours"
+2. **Data View incorrecto**
+   - Solución: Verifica que seleccionaste el correcto
+3. **No hay datos**
+   - Solución: Verifica índices en Dev Tools
+   ```
+   GET /_cat/indices?v
+   ```
+
+### Problema: "No results match your search criteria"
+
+**Solución**:
+1. Elimina todos los filtros
+2. Cambia rango de tiempo a "Last 7 days"
+3. Verifica que el Data View incluye los índices correctos
+
+### Problema: Visualización vacía
+
+**Posibles causas**:
+1. **Campo no existe**
+   - Solución: Verifica en Discover que el campo existe
+2. **Filtro muy restrictivo**
+   - Solución: Elimina filtros temporalmente
+3. **Datos fuera del rango de tiempo**
+   - Solución: Amplía rango de tiempo
+
+### Problema: Dashboard lento
+
+**Soluciones**:
+1. Reduce rango de tiempo
+2. Usa filtros para limitar datos
+3. Reduce número de visualizaciones
+4. Usa índices específicos (no `*`)
+
+## 📚 Conceptos Avanzados
 
 ### 1. **KQL vs Lucene**
-- **KQL**: M?s simple, recomendado
+- **KQL**: Más simple, recomendado
   ```
   container.name: "juice-shop"
   ```
-- **Lucene**: M?s potente, sintaxis compleja
+- **Lucene**: Más potente, sintaxis compleja
   ```
   container.name:"juice-shop" AND message:/error.*/
   ```
@@ -556,65 +659,25 @@ done
 - Ejemplos:
   - Count: Contar documentos
   - Average: Promedio de un campo
-  - Terms: Agrupar por valores ?nicos
+  - Terms: Agrupar por valores únicos
   - Date Histogram: Agrupar por tiempo
 
 ### 3. **Field Types**
 - **keyword**: Texto exacto (para filtros)
-- **text**: Texto analizado (para b?squeda full-text)
+- **text**: Texto analizado (para búsqueda full-text)
 - **date**: Fechas
-- **long**: N?meros enteros
-- **float**: N?meros decimales
+- **long**: Números enteros
+- **float**: Números decimales
 
 ### 4. **Time Series**
 - Datos ordenados por tiempo
-- ?ndices diarios (`filebeat-2025.11.04`)
+- Índices diarios (`filebeat-2025.11.04`)
 - Facilita:
-  - B?squedas por rango de tiempo
-  - Eliminaci?n de datos antiguos
-  - Optimizaci?n de queries
+  - Búsquedas por rango de tiempo
+  - Eliminación de datos antiguos
+  - Optimización de queries
 
-## ?? Troubleshooting
-
-### Problema: No veo logs en Discover
-
-**Posibles causas**:
-1. **Rango de tiempo incorrecto**
-   - Soluci?n: Ampl?a a "Last 24 hours"
-2. **Data View incorrecto**
-   - Soluci?n: Verifica que seleccionaste el correcto
-3. **No hay datos**
-   - Soluci?n: Verifica ?ndices en Dev Tools
-   ```
-   GET /_cat/indices?v
-   ```
-
-### Problema: "No results match your search criteria"
-
-**Soluci?n**:
-1. Elimina todos los filtros
-2. Cambia rango de tiempo a "Last 7 days"
-3. Verifica que el Data View incluye los ?ndices correctos
-
-### Problema: Visualizaci?n vac?a
-
-**Posibles causas**:
-1. **Campo no existe**
-   - Soluci?n: Verifica en Discover que el campo existe
-2. **Filtro muy restrictivo**
-   - Soluci?n: Elimina filtros temporalmente
-3. **Datos fuera del rango de tiempo**
-   - Soluci?n: Ampl?a rango de tiempo
-
-### Problema: Dashboard lento
-
-**Soluciones**:
-1. Reduce rango de tiempo
-2. Usa filtros para limitar datos
-3. Reduce n?mero de visualizaciones
-4. Usa ?ndices espec?ficos (no `*`)
-
-## ?? Pr?ximos Pasos (Opcional)
+## 🚀 Próximos Pasos (Opcional)
 
 ### Mejoras adicionales:
 
@@ -624,56 +687,57 @@ done
    - Alertas por umbral de errores
 
 2. **Machine Learning**:
-   - Detecci?n de anomal?as
-   - Predicci?n de tendencias
+   - Detección de anomalías
+   - Predicción de tendencias
    - Alertas inteligentes
 
 3. **Seguridad**:
-   - Habilitar autenticaci?n
+   - Habilitar autenticación
    - Roles y permisos
    - Audit logs
 
-4. **Optimizaci?n**:
+4. **Optimización**:
    - ILM (Index Lifecycle Management)
-   - Snapshots autom?ticos
-   - Pol?ticas de retenci?n
+   - Snapshots automáticos
+   - Políticas de retención
 
-5. **Integraci?n**:
-   - M?tricas con Metricbeat
+5. **Integración**:
+   - Métricas con Metricbeat
    - APM para tracing
    - Uptime monitoring
 
-## ?? Resumen
+## 📊 Resumen
 
-? **Logrado**:
+### ✅ **Logrado**:
 - Data Views configurados
 - Discover funcional para explorar logs
 - Visualizaciones creadas
 - Dashboard armado
 - Dev Tools probado
 
-? **Aprendido**:
-- C?mo navegar Kibana
-- KQL para b?squedas
+### 📖 **Aprendido**:
+- Cómo navegar Kibana
+- KQL para búsquedas
 - Crear visualizaciones
 - Armar dashboards
 - Usar Dev Tools
 
-? **Sistema Completo**:
+### 🔄 **Sistema Completo**:
 ```
-Juice Shop ? Docker ? Filebeat ? Elasticsearch ? Kibana ? Usuario
-   ?         ?        ?           ?             ?        ?
+Juice Shop → Docker → Filebeat → Elasticsearch → Kibana → Usuario
 ```
 
-**El sistema ELK est? 100% funcional y configurado** ??
+**El sistema ELK está 100% funcional y configurado** ✅
 
-## ?? Resultado Final
+## 🎯 Resultado Final
 
 Ahora tienes:
-- ? Logs recolect?ndose autom?ticamente
-- ? Almacenamiento centralizado en Elasticsearch
-- ? Visualizaci?n en tiempo real en Kibana
-- ? Dashboards para monitoreo
-- ? Herramientas para an?lisis y debugging
+- ✅ Logs recolectándose automáticamente
+- ✅ Almacenamiento centralizado en Elasticsearch
+- ✅ Visualización en tiempo real en Kibana
+- ✅ Dashboards para monitoreo
+- ✅ Herramientas para análisis y debugging
 
-**?Tu sistema de logging profesional est? completo!**
+**¡Tu sistema de logging profesional está completo!** 🎉
+
+<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
