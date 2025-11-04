@@ -17,15 +17,21 @@ Implementar un sistema de monitoreo y logging para contenedores Docker usando El
 - [x] Healthcheck configurado
 - [x] Red compartida elk-network
 
+### ? Paso 3: Kibana
+- [x] Servicio Kibana agregado
+- [x] Conectado a Elasticsearch
+- [x] Healthcheck configurado
+- [x] Dependencia de Elasticsearch configurada
+- [x] Interfaz web en puerto 5601
+
 ### ? Siguientes Pasos
-- [ ] Paso 3: Agregar Kibana
 - [ ] Paso 4: Agregar Filebeat
 - [ ] Paso 5: Configurar visualizaci?n
 
 ## Uso Actual
 
 ```bash
-# Levantar Juice Shop
+# Levantar todos los servicios
 docker compose up -d
 
 # Ver logs
@@ -37,14 +43,18 @@ docker compose down
 
 ## Acceso
 - Juice Shop: http://localhost:3000
+- Kibana: http://localhost:5601
 - Elasticsearch API: http://localhost:9200
 
-## Verificar Elasticsearch
+## Verificar Servicios
 
 ```bash
-# Ver salud del cluster
+# Ver salud de Elasticsearch
 curl http://localhost:9200/_cluster/health?pretty
 
-# Ver informaci?n del nodo
-curl http://localhost:9200
+# Ver estado de Kibana
+curl http://localhost:5601/api/status
+
+# Ver todos los servicios
+docker compose ps
 ```
