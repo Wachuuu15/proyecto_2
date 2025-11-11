@@ -1,179 +1,208 @@
 # Proyecto 2 - Sistema de Logging con ELK Stack
-<a id="readme-top"></a>
 
-<!--
-PROJECT DESCRIPTION
--->
-## 📜 Descripción
+## 📜 ¿Qué es este proyecto?
 
-Este proyecto implementa un sistema completo de monitoreo y logging para contenedores Docker usando el **ELK Stack** (Elasticsearch, Logstash, Kibana) con **Filebeat**. El sistema permite:
+Este es un **proyecto acumulativo** donde construirás paso a paso un sistema profesional de monitoreo y logging usando el **ELK Stack** (Elasticsearch, Kibana, Filebeat) con **OWASP Juice Shop** como aplicación de prueba.
 
-- Recolectar logs de aplicaciones Docker en tiempo real
-- Indexar y almacenar logs en Elasticsearch
-- Visualizar y analizar logs mediante Kibana
-- Crear dashboards personalizados para monitoreo
+### ¿Qué aprenderás?
 
-El sistema está 100% funcional y listo para uso en producción.
+- ✅ **Docker y contenedores**: Orquestación con Docker Compose
+- ✅ **ELK Stack**: Elasticsearch, Kibana, Filebeat
+- ✅ **Seguridad**: Red Team (explotación) y Blue Team (detección)
+- ✅ **OWASP Top 10**: SQL Injection, XSS, Broken Auth, Access Control
+- ✅ **Documentación técnica**: Cómo documentar proyectos profesionalmente
+
+### ¿Qué construirás?
+
+Un sistema completo que:
+1. Recolecta logs de aplicaciones Docker en tiempo real
+2. Almacena y indexa logs en Elasticsearch
+3. Visualiza logs en dashboards de Kibana
+4. Detecta ataques de seguridad automáticamente
+
+---
+
+## 🎯 Estructura del Proyecto
+
+### 6 Pasos Incrementales
+
+El proyecto está dividido en **6 pasos** que debes completar en orden. Cada paso construye sobre el anterior:
+
+```
+Paso 1: Juice Shop Básico          (30 min)
+   ↓
+Paso 2: + Elasticsearch             (45 min)
+   ↓
+Paso 3: + Kibana                    (45 min)
+   ↓
+Paso 4: + Filebeat                  (1 hora) ← Sistema ELK completo
+   ↓
+Paso 5: + Visualización             (1.5 horas)
+   ↓
+Paso 6: + Blue Team & Red Team      (2 horas)
+```
+
+**Tiempo total estimado**: ~6-7 horas
+
+### Ramas Git
+
+Cada paso tiene su propia rama Git:
+
+```bash
+git checkout paso-1-juice-shop       # Empezar aquí
+git checkout paso-2-elasticsearch
+git checkout paso-3-kibana
+git checkout paso-4-filebeat
+git checkout paso-5-visualizacion
+git checkout paso-6-blue-team
+```
+
+---
 
 ## 📦 Requisitos
 
-- Docker
-- Docker Compose
-- Comandos básicos de Linux
-- Navegador web (para acceder a Kibana)
+### Software Necesario
 
-## 🚀 Instalación y Ejecución
+- **Docker**: Versión 20.10+
+- **Docker Compose**: Versión 2.0+
+- **Git**: Versión 2.30+
+- **Navegador web**: Chrome, Firefox o Safari
+- **curl**: Para pruebas de API (viene instalado en macOS/Linux)
 
-### 1. Clona este repositorio
+### Recursos de Sistema
+
+- **RAM**: Mínimo 4GB, recomendado 8GB
+- **Disco**: Mínimo 10GB libres
+- **CPU**: 2 cores mínimo
+- **Puertos libres**: 3000, 5601, 9200, 9300
+
+### Verificar Instalación
+
+```bash
+# Docker
+docker --version
+# Debe mostrar: Docker version 20.10.x o superior
+
+# Docker Compose
+docker compose version
+# Debe mostrar: Docker Compose version v2.x.x o superior
+
+# Git
+git --version
+# Debe mostrar: git version 2.30.x o superior
+```
+
+---
+
+## 🚀 Inicio Rápido
+
+### 1. Clonar el Repositorio
 
 ```bash
 git clone <url-del-repositorio>
 cd proyecto_2
 ```
 
-### 2. Levanta el sistema
+### 2. Leer las Instrucciones
 
 ```bash
-docker compose up -d
+# Lee este archivo primero
+cat README.md
+
+# Luego lee las instrucciones detalladas
+cat INSTRUCCIONES.md
 ```
 
-### 3. Espera que los servicios inicien (~2 minutos)
+### 3. Empezar con el Paso 1
 
 ```bash
-docker compose ps
+# Cambiar a la rama del paso 1
+git checkout paso-1-juice-shop
+
+# Leer la documentación del paso
+cat PASO_1_JUICE_SHOP.md
+
+# Seguir las instrucciones en INSTRUCCIONES.md
 ```
 
-Verifica que todos los servicios estén en estado `Up`:
-- `juice-shop`
-- `elasticsearch`
-- `kibana`
-- `filebeat`
+---
 
-### 4. Genera logs de prueba
+## 📚 Documentos Principales
 
-```bash
-for i in {1..20}; do 
-  curl -s http://localhost:3000 > /dev/null
-  echo "Request $i"
-  sleep 1
-done
-```
+### Para Estudiantes (DEBES LEER):
 
-### 5. Ver logs en Kibana
+1. **README.md** (este archivo)
+   - Qué es el proyecto
+   - Estructura y requisitos
+   - Inicio rápido
 
-1. Abre http://localhost:5601 en tu navegador
-2. Ve a **Management** → **Data Views**
-3. Crea un Data View: `filebeat-*`
-4. Ve a **Analytics** → **Discover**
-5. ¡Explora tus logs!
+2. **INSTRUCCIONES.md** ⭐ **IMPORTANTE**
+   - Cómo completar cada paso
+   - Comandos a ejecutar
+   - Qué screenshots capturar
+   - Cómo documentar
+   - Troubleshooting
 
-## 🔗 Acceso a Servicios
+3. **PLANTILLA_REPORTE.md** ⭐ **IMPORTANTE**
+   - Plantilla para tu reporte final
+   - Qué incluir en cada sección
+   - Ejemplos de documentación
 
-- **Juice Shop**: http://localhost:3000
-- **Kibana**: http://localhost:5601
-- **Elasticsearch API**: http://localhost:9200
-
-## 📚 Documentación Detallada
-
-Cada paso tiene su documentación completa con explicaciones técnicas y cómo se relaciona con los demás componentes:
+### Documentación Técnica por Paso:
 
 - `PASO_1_JUICE_SHOP.md` - Configuración de Juice Shop
 - `PASO_2_ELASTICSEARCH.md` - Implementación de Elasticsearch
 - `PASO_3_KIBANA.md` - Configuración de Kibana
 - `PASO_4_FILEBEAT.md` - Integración con Filebeat
-- `PASO_5_VISUALIZACION_KIBANA.md` - Guía de uso de Kibana
-- `PASO_6_BLUE_TEAM.md` - Operaciones defensivas y detecciones Blue Team
+- `PASO_5_VISUALIZACION_KIBANA.md` - Visualizaciones y dashboards
+- `PASO_6_BLUE_TEAM.md` - Operaciones defensivas
+- `ACTIVIDADES_RED_TEAM.md` - Explotación de vulnerabilidades
 
-## ✅ Progreso del Proyecto
+---
 
-### Paso 1: Juice Shop Básico
-- [x] Dockerfile configurado
-- [x] docker-compose.yml básico
-- [x] Servicio funcionando en puerto 3000
+## 📋 Entregables
 
-### Paso 2: Elasticsearch
-- [x] Servicio Elasticsearch agregado
-- [x] Configurado para nodo único
-- [x] Volumen persistente para datos
-- [x] Healthcheck configurado
-- [x] Red compartida elk-network
+### Qué debes entregar:
 
-### Paso 3: Kibana
-- [x] Servicio Kibana agregado
-- [x] Conectado a Elasticsearch
-- [x] Healthcheck configurado
-- [x] Dependencia de Elasticsearch configurada
-- [x] Interfaz web en puerto 5601
+1. **Reporte Final** (usando PLANTILLA_REPORTE.md)
+   - Formato: PDF o Markdown
+   - Todos los 6 pasos documentados
+   - Análisis técnico completo
 
-### Paso 4: Filebeat
-- [x] Servicio Filebeat agregado
-- [x] Configurado para leer logs de Docker
-- [x] Conectado a Elasticsearch y Kibana
-- [x] Volúmenes montados correctamente
-- [x] Procesadores configurados
-- [x] Índices dinámicos por contenedor
+2. **Screenshots** (mínimo 42)
+   - Organizados por paso
+   - Legibles y profesionales
+   - Ver INSTRUCCIONES.md para detalles
 
-### Paso 5: Visualización en Kibana
-- [x] Data Views configurados
-- [x] Discover para explorar logs
-- [x] Visualizaciones creadas
-- [x] Dashboard armado
-- [x] Guía completa de uso
+3. **Red Team** (4 vulnerabilidades)
+   - SQL Injection
+   - Cross-Site Scripting (XSS)
+   - Broken Authentication
+   - Broken Access Control
+   - Con PoC reproducible y CVSS
 
-### Paso 6: Defensa Blue Team
-- [x] Plan de actividades defensivas documentado
-- [x] Instrumentación propuesta (proxy, CORS, pipelines)
-- [x] Reglas de detección SQLi / XSS / Burst definidas
-- [x] Procedimientos de respuesta y reporte establecidos
+4. **Blue Team** (3 reglas de detección)
+   - Detección de SQLi
+   - Detección de XSS
+   - Detección de Scanning/Burst
+   - Dashboard de detecciones
 
-## 🛠️ Comandos Útiles
+5. **Archivos Adicionales**
+   - `comandos.txt` - Todos los comandos ejecutados
+   - `reglas-deteccion.json` - Reglas exportadas de Kibana
+   - `dashboard-export.ndjson` - Dashboard exportado
 
-### Ver logs
-
-```bash
-# Todos los servicios
-docker compose logs -f
-
-# Servicio específico
-docker compose logs -f filebeat
-docker compose logs -f elasticsearch
-```
-
-### Verificar servicios
-
-```bash
-# Estado de contenedores
-docker compose ps
-
-# Salud de Elasticsearch
-curl http://localhost:9200/_cluster/health?pretty
-
-# Índices creados
-curl http://localhost:9200/_cat/indices?v
-
-# Estado de Kibana
-curl http://localhost:5601/api/status
-```
-
-### Detener sistema
-
-```bash
-# Detener sin eliminar datos
-docker compose down
-
-# Detener y eliminar volúmenes (limpieza completa)
-docker compose down -v
-```
+---
 
 ## 🏗️ Arquitectura del Sistema
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                         USUARIO                                 │
-│                                                                 │
 │  1. Usa Juice Shop → Genera logs                               │
 │  2. Abre Kibana → Ve logs en tiempo real                       │
-│                                                                 │
+│  3. Red Team → Explota vulnerabilidades                        │
+│  4. Blue Team → Detecta y responde                             │
 └─────────────────────────────────────────────────────────────────┘
              │                                 │
              │ HTTP                            │ HTTP
@@ -196,6 +225,7 @@ docker compose down -v
 │   Filebeat       │                           │
 │   Recolecta      │                           │
 │   Procesa        │                           │
+│   Enriquece      │                           │
 └──────────────────┘                           │
            │                                   │
            │ HTTP POST (JSON)                  │
@@ -203,99 +233,151 @@ docker compose down -v
 ┌──────────────────┐                           │
 │   Elasticsearch  │◄──────────────────────────┘
 │   Puerto 9200    │
-│   Indexa y       │
+│   Indexa         │
 │   Almacena       │
 └──────────────────┘
            │
-           │
 ┌──────────────────┐
-│  Volúmenes     │
-│  Persistencia  │
+│  Volúmenes       │
+│  Persistencia    │
 └──────────────────┘
 ```
 
-## 📖 Conceptos Aprendidos
+---
 
-- **Docker Compose**: Orquestación de múltiples contenedores
-- **Elasticsearch**: Motor de búsqueda y análisis de logs
-- **Kibana**: Visualización y exploración de datos
-- **Filebeat**: Recolección ligera de logs
-- **Redes Docker**: Comunicación entre contenedores
-- **Volúmenes**: Persistencia de datos
-- **Healthchecks**: Verificación de disponibilidad
-- **Dependencies**: Orden de inicio de servicios
+## 🎓 Criterios de Evaluación
 
-## 🔧 Troubleshooting
+### Completitud (30%)
+- Todos los 6 pasos completados
+- Todos los servicios funcionando
+- Todas las verificaciones pasadas
 
-### Servicios no inician
+### Documentación (30%)
+- Reporte completo y bien estructurado
+- Mínimo 42 screenshots de calidad
+- Comandos documentados con outputs
+- Problemas y soluciones explicados
 
-```bash
-# Ver logs de error
-docker compose logs
+### Comprensión Técnica (25%)
+- Explicación clara de conceptos
+- Análisis de arquitectura
+- Entendimiento del flujo de datos
+- Decisiones de diseño justificadas
 
-# Verificar recursos
-docker stats
+### Seguridad (15%)
+- 4 vulnerabilidades explotadas (Red Team)
+- 3 reglas de detección configuradas (Blue Team)
+- Análisis de incidentes
+- Informe de respuesta
 
-# Reiniciar servicios
-docker compose restart
-```
+---
 
-### No veo logs en Kibana
+## 🆘 ¿Necesitas Ayuda?
 
-1. Verifica que Filebeat esté corriendo: `docker compose ps`
-2. Genera tráfico en Juice Shop
-3. Espera 30-60 segundos
-4. Verifica índices: `curl http://localhost:9200/_cat/indices?v`
-5. Amplía rango de tiempo en Kibana
+### Troubleshooting
 
-### Elasticsearch sin memoria
+Cada documento PASO_X.md incluye una sección de troubleshooting con problemas comunes y soluciones.
 
-```bash
-# Editar docker-compose.yml
-# Cambiar: ES_JAVA_OPTS=-Xms256m -Xmx256m
-docker compose restart elasticsearch
-```
+Ver también: **INSTRUCCIONES.md** sección "Problemas Comunes"
 
-## 📝 Historial de Commits
-
-Cada paso está documentado en un commit separado para control de versiones:
-
-- **Paso 1**: Configurar Juice Shop básico
-- **Paso 2**: Agregar Elasticsearch
-- **Paso 3**: Agregar Kibana
-- **Paso 4**: Agregar Filebeat - Completar flujo de datos
-- **Paso 5**: Configurar visualización en Kibana
+### Comandos Útiles
 
 ```bash
-# Ver historial
-git log --oneline
+# Ver estado de servicios
+docker compose ps
 
-# Ver cambios de un paso específico
-git show <commit-hash>
+# Ver logs
+docker compose logs -f <servicio>
 
-# Ver diferencias entre pasos
-git diff <commit1> <commit2>
+# Reiniciar servicio
+docker compose restart <servicio>
+
+# Limpiar todo
+docker compose down -v
+
+# Verificar Elasticsearch
+curl http://localhost:9200/_cluster/health?pretty
+
+# Verificar Kibana
+curl http://localhost:5601/api/status
+
+# Ver índices
+curl http://localhost:9200/_cat/indices?v
 ```
 
-## 👥 Contribuciones
+### Recursos Adicionales
 
-Si deseas contribuir al proyecto, por favor sigue los siguientes pasos:
+- [Docker Documentation](https://docs.docker.com/)
+- [Elasticsearch Guide](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html)
+- [Kibana Guide](https://www.elastic.co/guide/en/kibana/current/index.html)
+- [Filebeat Reference](https://www.elastic.co/guide/en/beats/filebeat/current/index.html)
+- [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/)
+- [OWASP Top 10](https://owasp.org/Top10/)
+- [CVSS Calculator](https://www.first.org/cvss/calculator/3.1)
 
-1. Realiza un fork del repositorio.
-2. Crea una nueva rama para tu funcionalidad (`git checkout -b feature/nueva-funcionalidad`).
-3. Haz commit de tus cambios (`git commit -m 'Añadir nueva funcionalidad'`).
-4. Haz push a la rama (`git push origin feature/nueva-funcionalidad`).
-5. Abre un Pull Request.
+---
 
-## 📄 Licencia
+## ✅ Checklist Rápido
 
-Este proyecto es con fines educativos.
+Antes de empezar:
+- [ ] Docker y Docker Compose instalados
+- [ ] Git instalado
+- [ ] Puertos 3000, 5601, 9200 libres
+- [ ] Mínimo 4GB RAM disponible
+- [ ] Leído README.md (este archivo)
+- [ ] Leído INSTRUCCIONES.md
+- [ ] Descargado PLANTILLA_REPORTE.md
+
+Durante el proyecto:
+- [ ] Paso 1 completado y documentado
+- [ ] Paso 2 completado y documentado
+- [ ] Paso 3 completado y documentado
+- [ ] Paso 4 completado y documentado
+- [ ] Paso 5 completado y documentado
+- [ ] Paso 6 completado y documentado
+
+Antes de entregar:
+- [ ] Reporte completo (mínimo 42 screenshots)
+- [ ] 4 vulnerabilidades explotadas
+- [ ] 3 reglas de detección configuradas
+- [ ] Archivos exportados (reglas, dashboard)
+- [ ] Revisado ortografía y formato
+
+---
+
+## 🚀 ¡Empecemos!
+
+```bash
+# 1. Lee las instrucciones completas
+cat INSTRUCCIONES.md
+
+# 2. Cambia a la rama del paso 1
+git checkout paso-1-juice-shop
+
+# 3. Lee la documentación del paso 1
+cat PASO_1_JUICE_SHOP.md
+
+# 4. ¡Empieza a construir!
+docker compose up -d
+```
+
+---
 
 ## 📞 Contacto
 
-Si tienes preguntas o comentarios sobre el proyecto, puedes contactarnos a través de:
+Si tienes preguntas:
+- Consulta INSTRUCCIONES.md (sección Troubleshooting)
+- Revisa la documentación del paso correspondiente
+- Pregunta al instructor en horario de clase
 
-- Issues en el repositorio
-- Pull Requests para mejoras
+---
 
-<p align="right">(<a href="#readme-top">Ir al inicio</a>)</p>
+**¡Buena suerte con tu proyecto!** 🎉🚀
+
+**Recuerda**: Este es un proyecto de aprendizaje. Los errores son oportunidades para entender mejor. Documenta todo, pregunta cuando tengas dudas, y disfruta construyendo un sistema profesional.
+
+---
+
+**Versión**: 1.0  
+**Fecha**: 2025-11-10  
+**Curso**: Seguridad en Redes y Sistemas
