@@ -1,256 +1,108 @@
-# 🎉 Proyecto Blue y Red Team
+# 🎉 Proyecto Simplificado y Listo
 
-## 📊 Resumen Ejecutivo
+## ✅ Consolidación Completada
 
-Este proyecto es una solución educativa profesional e incremental para enseñar el stack ELK (Elasticsearch, Logstash/Filebeat, Kibana) con enfoque a seguridad (Red Team y Blue Team).
-
-### Características Principales
-
-- ✅ **Proyecto acumulativo** con 6 pasos secuenciales
-- ✅ **6 ramas Git** independientes (una por cada paso)
-- ✅ **15 documentos** de guías y plantillas
-- ✅ **4 vulnerabilidades** documentadas (Red Team)
-- ✅ **3 reglas de detección** (Blue Team)
-- ✅ **Scripts automatizados** incluidos
-- ✅ **Plantilla completa** para reporte final
+Se ha simplificado la documentación de **17 archivos** a solo **3 archivos principales** para los estudiantes.
 
 ---
 
-## 🌳 Ramas Git Creadas
+## 📚 Documentos para Estudiantes (SOLO 3)
 
-Cada paso del proyecto tiene su rama, commit y objetivo:
+### 1. **README.md** - ¿Qué es el proyecto?
+**Contenido**:
+- Descripción del proyecto
+- Qué aprenderán
+- Estructura de 6 pasos
+- Requisitos técnicos
+- Inicio rápido
+- Arquitectura del sistema
+- Criterios de evaluación
+- Entregables
 
-- **paso-1-juice-shop** (`5960de8`)
-  - Dockerfile  
-  - docker-compose.yml (solo Juice Shop)
-  - PASO_1_JUICE_SHOP.md  
-  - Documentación base  
-  - *Objetivo: Configurar Juice Shop básico*
-
-- **paso-2-elasticsearch** (`693cbe1`)
-  - Todo de paso 1 +
-  - docker-compose.yml (+ elasticsearch)
-  - PASO_2_ELASTICSEARCH.md
-  - Red elk-network, volumen elasticsearch-data
-  - *Objetivo: Agregar Elasticsearch al stack*
-
-- **paso-3-kibana** (`aa548bd`)
-  - Todo de paso 2 +
-  - docker-compose.yml (+ kibana)
-  - PASO_3_KIBANA.md
-  - *Objetivo: Agregar Kibana para visualización*
-
-- **paso-4-filebeat** (`cea1a38`)
-  - Todo de paso 3 +
-  - docker-compose.yml (+ filebeat)
-  - filebeat.yml  
-  - PASO_4_FILEBEAT.md  
-  - Volumen filebeat-data  
-  - *Objetivo: Completar el flujo de datos (ELK completo)*
-
-- **paso-5-visualizacion** (`427d8c8`)
-  - Todo de paso 4 +
-  - PASO_5_VISUALIZACION_KIBANA.md
-  - *Objetivo: Configuración de Kibana para visualizaciones*
-
-- **paso-6-blue-team** (`12eb118`)
-  - Todo de paso 5 +
-  - scripts/blue-team-traffic.sh  
-  - PASO_6_BLUE_TEAM.md  
-  - ACTIVIDADES_RED_TEAM.md  
-  - *Objetivo: Operaciones defensivas y ofensivas*
+**Cuándo leerlo**: PRIMERO, antes de empezar
 
 ---
 
-## 📚 Documentos Creados
+### 2. **INSTRUCCIONES.md** - ¿Cómo completarlo?
+**Contenido**:
+- Flujo de trabajo general
+- Instrucciones detalladas para cada paso (1-6)
+- Comandos exactos a ejecutar
+- Qué screenshots capturar
+- Cómo verificar que funciona
+- Cuándo limpiar
+- Problemas comunes y soluciones
+- Checklist final
 
-### Guías Principales (5)
-1. **ESTRATEGIA_RAMAS.md** - Estructura de ramas y flujo
-2. **GUIA_DOCUMENTACION.md** - Captura de screenshots (42-58)
-3. **PLAN_PRUEBAS.md** - Checklist por paso
-4. **PLAN_PROYECTO_ACUMULATIVO.md** - Visión general
-5. **INSTRUCCIONES_USO_RAMAS.md** - Uso de ramas Git
-
-### Actividades de Seguridad (2)
-6. **ACTIVIDADES_RED_TEAM.md** - Vulnerabilidades, PoC, CVSS
-7. **PASO_6_BLUE_TEAM.md** - Reglas, respuesta a incidentes
-
-### Plantillas y Resúmenes (3)
-8. **PLANTILLA_DOCUMENTACION_ESTUDIANTE.md** - Reporte final
-9. **RESUMEN_PROYECTO_COMPLETO.md** - Resumen final
-
-### Documentación Técnica (5)
-10. **PASO_1_JUICE_SHOP.md** - Juice Shop
-11. **PASO_2_ELASTICSEARCH.md** - Elasticsearch
-12. **PASO_3_KIBANA.md** - Kibana
-13. **PASO_4_FILEBEAT.md** - Filebeat
-14. **PASO_5_VISUALIZACION_KIBANA.md** - Visualización
+**Cuándo leerlo**: Durante todo el proyecto, paso a paso
 
 ---
 
-## 🎯 Contenido por Categoría
+### 3. **PLANTILLA_REPORTE.md** - ¿Qué entregar?
+**Contenido**:
+- Plantilla completa del reporte
+- Estructura por cada paso
+- Formato para documentar comandos
+- Formato para screenshots
+- Formato para vulnerabilidades (con CVSS)
+- Secciones de análisis técnico
+- Conclusiones
+- Anexos
 
-### Red Team (Explotación)
-**Vulnerabilidades Documentadas (4):**
-1. **SQL Injection**
-   - PoC en login/búsqueda
-   - CVSS: 9.8
-   - OWASP: A03:2021
-   - Bypass autenticación, extracción de datos
-2. **Cross-Site Scripting (XSS)**
-   - Reflejado y almacenado
-   - CVSS: 6.1-7.1
-   - OWASP: A03:2021
-   - Robo de cookies/sesiones
-3. **Broken Authentication**
-   - Password reset predictable, JWT manipulation
-   - CVSS: 8.1
-   - OWASP: A07:2021
-   - Accesos no autorizados
-4. **Broken Access Control**
-   - IDOR en baskets/perfiles
-   - CVSS: 7.5
-   - OWASP: A01:2021
-
-### Blue Team (Defensa)
-**Reglas de Detección (mínimo 3):**
-1. **SQL Injection**  
-   - Custom query, severidad alta  
-   - Detecta `' OR 1=1`, `UNION SELECT`, etc.
-2. **XSS**  
-   - Threshold, severidad alta  
-   - Detecta `<script>`, `onerror=`, etc.
-3. **Scanning/Burst**  
-   - >20 errores 4xx/5xx en 2 minutos
-
-**Instrumentación:**
-- Script de tráfico legítimo
-- CORS/Nginx proxy (opcional)
-- Filebeat processors, ingest pipelines
-- Dashboards y alertas
+**Cuándo usarlo**: Mientras documentas cada paso
 
 ---
 
-## 📸 Screenshots Requeridos
+## 📖 Documentos Técnicos (Por Paso)
 
-| Paso | Mínimo | Recom. | Descripción                        |
-|------|--------|--------|-------------------------------------|
-| 1    | 4      | 6      | Docker, interfaz web, logs          |
-| 2    | 5      | 8      | Elasticsearch, cluster/índices      |
-| 3    | 4      | 6      | Kibana, Dev Tools                   |
-| 4    | 5      | 8      | Filebeat, logs, índices             |
-| 5    | 12     | 15     | Data Views, dashboards              |
-| 6    | 12     | 15     | Reglas, ataques, alertas            |
-|**Total**|**42**|**58** |                                     |
+Estos documentos se mantienen para profundizar:
 
-**Detalle de capturas:**  
-Ver **GUIA_DOCUMENTACION.md**: qué y cómo capturar, criterios, ejemplos.
+- `PASO_1_JUICE_SHOP.md` - Explicación técnica de Juice Shop
+- `PASO_2_ELASTICSEARCH.md` - Explicación técnica de Elasticsearch
+- `PASO_3_KIBANA.md` - Explicación técnica de Kibana
+- `PASO_4_FILEBEAT.md` - Explicación técnica de Filebeat
+- `PASO_5_VISUALIZACION_KIBANA.md` - Guía de visualizaciones
+- `PASO_6_BLUE_TEAM.md` - Operaciones defensivas
+- `ACTIVIDADES_RED_TEAM.md` - Explotación de vulnerabilidades
 
----
-
-## ⏱️ Tiempo Estimado
-
-| Fase                | Tiempo        |
-|---------------------|--------------|
-| Juice Shop          | 30 min       |
-| Elasticsearch       | 45 min       |
-| Kibana              | 45 min       |
-| Filebeat            | 1 hora       |
-| Visualización       | 1.5 horas    |
-| Blue Team           | 2 horas      |
-| Red Team            | 3 horas      |
-| Doc. final          | 2 horas      |
-| **TOTAL**           | **~11 horas**|
+**Cuándo leerlos**: Cuando estés en ese paso específico, para entender los conceptos a fondo
 
 ---
 
-## 🎓 Objetivos de Aprendizaje
+## 👨‍🏫 Documento para el Instructor
 
-**Técnicos**
-- Docker y Docker Compose
-- Elasticsearch (índices, doc., queries)
-- Kibana (visualización, dashboards)
-- Filebeat (procesamiento de logs)
-- Redes Docker, volúmenes, healthchecks
-
-**Seguridad**
-- OWASP Top 10, CVSS v3.1
-- SQLi, XSS, Broken Auth, Broken Access Control
-- Detección y reglas de seguridad
-- Análisis y respuesta a incidentes
-
-**Profesionales**
-- Documentación, screenshots
-- Troubleshooting
-- Git y ramas, metodología incremental
+- `INSTRUCCIONES_PARA_INSTRUCTOR.md` - Cómo compartir el proyecto con estudiantes
 
 ---
 
-## 📦 Entregables
+## 🎯 Flujo de Lectura para Estudiantes
 
-1. **Reporte Final** (PDF/Markdown, plantilla base)
-2. **Screenshots** (>=42, organizados por paso, calidad)
-3. **Red Team** (4 vulnerabilidades explotadas, PoC, CVSS, OWASP)
-4. **Blue Team** (3 reglas, dashboard, respuesta)
-5. **Extra:** comandos.txt, dashboard-export.ndjson, reglas-deteccion.json
-
----
-
-## 🏆 Criterios de Evaluación
-
-- **Completitud (30%)**: 6 pasos, servicios y verificaciones
-- **Documentación (30%)**: reportes completos, screenshots, comandos, troubleshooting
-- **Comprensión Técnica (25%)**: explicación de arquitectura, decisiones
-- **Seguridad (15%)**: explotación, detección y análisis de incidentes
-
----
-
-## 🛠️ Comandos Útiles
-
-**Git**
-```bash
-git branch -a             # Ver ramas
-git checkout paso-X-nombre  # Cambiar rama
-git diff paso-1-juice-shop paso-2-elasticsearch  # Diferencias
-git ls-tree --name-only paso-3-kibana            # Archivos de rama
 ```
-
-**Docker**
-```bash
-docker compose up -d               # Levantar servicios
-docker compose ps                  # Estado
-docker compose logs -f <servicio>  # Logs
-docker compose down -v             # Limpiar todo
-docker stats                       # Recursos
-```
-
-**Verificación**
-```bash
-curl http://localhost:9200/_cluster/health?pretty
-curl http://localhost:9200/_cat/indices?v
-curl http://localhost:5601/api/status
-curl http://localhost:3000
+1. README.md
+   ↓
+2. INSTRUCCIONES.md (Paso 1)
+   ↓
+3. PASO_1_JUICE_SHOP.md (para profundizar)
+   ↓
+4. Ejecutar comandos
+   ↓
+5. Documentar en PLANTILLA_REPORTE.md
+   ↓
+6. INSTRUCCIONES.md (Paso 2)
+   ↓
+7. PASO_2_ELASTICSEARCH.md
+   ↓
+... y así sucesivamente
 ```
 
 ---
 
-## 📁 Estructura de Archivos del Proyecto
+## 📊 Comparación: Antes vs Después
 
+### Antes (Confuso)
 ```
-proyecto_2/
-├── .git/
-├── Dockerfile
-├── docker-compose.yml
-├── filebeat.yml
-├── scripts/
-│   └── blue-team-traffic.sh
-├── PASO_1_JUICE_SHOP.md
-├── PASO_2_ELASTICSEARCH.md
-├── PASO_3_KIBANA.md
-├── PASO_4_FILEBEAT.md
-├── PASO_5_VISUALIZACION_KIBANA.md
-├── PASO_6_BLUE_TEAM.md
-├── ACTIVIDADES_RED_TEAM.md
+17 archivos Markdown
+├── README.md
 ├── ESTRATEGIA_RAMAS.md
 ├── GUIA_DOCUMENTACION.md
 ├── PLAN_PRUEBAS.md
@@ -259,63 +111,176 @@ proyecto_2/
 ├── PLANTILLA_DOCUMENTACION_ESTUDIANTE.md
 ├── README_PROYECTO_COMPLETO.md
 ├── RESUMEN_PROYECTO_COMPLETO.md
-└── README.md
+├── PASO_1 a PASO_6 (6 archivos)
+├── ACTIVIDADES_RED_TEAM.md
+└── INSTRUCCIONES_PARA_INSTRUCTOR.md
+
+Estudiantes: "¿Por dónde empiezo?" 😵
+```
+
+### Después (Claro)
+```
+3 archivos principales + documentación técnica
+├── README.md ⭐ (Qué es)
+├── INSTRUCCIONES.md ⭐ (Cómo hacerlo)
+├── PLANTILLA_REPORTE.md ⭐ (Qué entregar)
+├── PASO_1 a PASO_6 (6 archivos técnicos)
+├── ACTIVIDADES_RED_TEAM.md
+└── INSTRUCCIONES_PARA_INSTRUCTOR.md
+
+Estudiantes: "¡Perfecto, empiezo por README!" 😊
 ```
 
 ---
 
-## 🔗 Flujo de Datos Completo
+## ✨ Beneficios de la Simplificación
+
+### Para Estudiantes
+✅ **Menos confusión** - Solo 3 archivos principales  
+✅ **Flujo claro** - Saben qué leer y cuándo  
+✅ **Todo en un lugar** - INSTRUCCIONES.md tiene todo el paso a paso  
+✅ **Plantilla lista** - Solo llenar la plantilla  
+✅ **Menos tiempo perdido** - Más tiempo haciendo el proyecto  
+
+### Para el Instructor
+✅ **Más fácil de explicar** - "Lean estos 3 archivos"  
+✅ **Menos preguntas** - Todo está centralizado  
+✅ **Más fácil de evaluar** - Todos usan la misma plantilla  
+
+---
+
+## 📋 Instrucciones para Ti (Instructor)
+
+### 1. Revisar los 3 Archivos Principales
+
+```bash
+cd /Users/admin/Documents/Git/UVG/proyecto_2
+
+# Leer en este orden:
+cat README.md
+cat INSTRUCCIONES.md
+cat PLANTILLA_REPORTE.md
+```
+
+### 2. Probar un Paso (Opcional)
+
+```bash
+# Probar Paso 1
+git checkout paso-1-juice-shop
+docker compose up -d
+curl http://localhost:3000
+docker compose down -v
+```
+
+### 3. Subir al Repositorio
+
+```bash
+# Subir todas las ramas
+git push origin paso-1-juice-shop
+git push origin paso-2-elasticsearch
+git push origin paso-3-kibana
+git push origin paso-4-filebeat
+git push origin paso-5-visualizacion
+git push origin paso-6-blue-team
+git push origin feat/juice-kibana
+```
+
+### 4. Comunicar a Estudiantes
+
+**Email sugerido**:
 
 ```
-┌─────────────┐
-│  USUARIO    │
-└─────┬───────┘
-      │
-      │ HTTP
-      ▼
-┌─────────────┐      stdout/stderr       ┌─────────────┐
-│ Juice Shop  │ ───────────────► Docker │ Docker Logs │
-│ :3000       │                        └─────┬───────┘
-└─────┬───────┘                             │
-      │ logs                                │ Archivos .log
-      ▼                                     ▼
-┌────────────────┐       HTTP POST (JSON) ┌──────────────┐
-│   Filebeat     │ ─────────────────────► │ Elasticsearch│
-│                │                        │  :9200       │
-└────────────────┘                        └─────┬────────┘
-      │                                         │
-      ▼     Queries                             ▼
-┌─────────────┐◄────────────────────────────┐
-│   Kibana    │       HTTP                  │
-│    :5601    │                             │
-└─────────────┘                             │
-      │                                     │
-      ▼                                     ▼
-┌────────────────┐                  ┌──────────────┐
-│ Volúmenes      │                  │ Persistencia │
-└────────────────┘                  └──────────────┘
+Asunto: Proyecto 2 - Sistema ELK Stack
+
+Estimados estudiantes,
+
+Ya está disponible el Proyecto 2. Es un proyecto acumulativo de 6 pasos.
+
+📚 CÓMO EMPEZAR:
+
+1. Clonar el repositorio
+2. Leer README.md (qué es el proyecto)
+3. Leer INSTRUCCIONES.md (cómo completarlo)
+4. Usar PLANTILLA_REPORTE.md (para documentar)
+
+📋 ENTREGABLES:
+- Reporte completo (mínimo 42 screenshots)
+- 4 vulnerabilidades explotadas
+- 3 reglas de detección configuradas
+
+⏱️ TIEMPO ESTIMADO: ~7 horas
+
+📅 FECHA DE ENTREGA: [Fecha]
+
+¡Éxito!
 ```
 
 ---
 
-## 📞 Soporte y Contacto
+## 🎓 Estructura Final del Repositorio
 
-**Para Estudiantes:**
-1. Consultar troubleshooting en la documentación de cada paso
-2. Revisar PLAN_PRUEBAS.md
-3. Consultar documentación oficial
-4. Preguntar al instructor
-5. Colaborar (sin copiar)
-
-**Para el Instructor:**
-- **PLAN_PROYECTO_ACUMULATIVO.md**: Visión y estructura global
-- **PLAN_PRUEBAS.md**: Checklist por paso
-- **ESTRATEGIA_RAMAS.md**: Git y ramas
-- **RESUMEN_PROYECTO_COMPLETO.md**: Este resumen
+```
+proyecto_2/
+├── README.md ⭐ LEER PRIMERO
+├── INSTRUCCIONES.md ⭐ SEGUIR PASO A PASO
+├── PLANTILLA_REPORTE.md ⭐ USAR PARA DOCUMENTAR
+│
+├── PASO_1_JUICE_SHOP.md
+├── PASO_2_ELASTICSEARCH.md
+├── PASO_3_KIBANA.md
+├── PASO_4_FILEBEAT.md
+├── PASO_5_VISUALIZACION_KIBANA.md
+├── PASO_6_BLUE_TEAM.md
+├── ACTIVIDADES_RED_TEAM.md
+│
+├── INSTRUCCIONES_PARA_INSTRUCTOR.md (solo para ti)
+├── RESUMEN_PROYECTO.md (este archivo)
+│
+├── Dockerfile
+├── docker-compose.yml
+├── filebeat.yml
+└── scripts/
+    └── blue-team-traffic.sh
+```
 
 ---
 
-**Creado por:** Sistema de Documentación Automatizada  
-**Para:** Proyecto 2 - Sistema Logging ELK Stack  
-**Institución:** UVG  
-**Curso:** Seguridad en Redes y Sistemas
+## ✅ Checklist para Ti
+
+Antes de compartir con estudiantes:
+
+- [x] Documentación consolidada en 3 archivos
+- [x] 6 ramas Git creadas
+- [x] Cada rama con archivos apropiados
+- [x] README.md claro y conciso
+- [x] INSTRUCCIONES.md con todos los pasos
+- [x] PLANTILLA_REPORTE.md lista para usar
+- [ ] Ramas subidas al repositorio remoto
+- [ ] Email preparado para estudiantes
+- [ ] Fecha de entrega definida
+
+---
+
+## 🚀 Próximos Pasos
+
+1. **Revisa los 3 archivos principales** (15 minutos)
+2. **Prueba un paso** (opcional, 30 minutos)
+3. **Sube las ramas al remoto** (5 minutos)
+4. **Envía el email a estudiantes** (5 minutos)
+
+---
+
+## 📞 Soporte
+
+Si los estudiantes tienen dudas:
+- Primero: Revisar INSTRUCCIONES.md
+- Segundo: Revisar el PASO_X.md correspondiente
+- Tercero: Preguntar en clase
+
+---
+
+**¡Proyecto listo para usar!** 🎉
+
+**Versión**: 2.0 (Simplificada)  
+**Fecha**: 2025-11-10  
+**Estado**: ✅ LISTO PARA ESTUDIANTES
