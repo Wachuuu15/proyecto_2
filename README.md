@@ -127,28 +127,17 @@ cat PASO_1_JUICE_SHOP.md
 
 ---
 
-## 📚 Documentos Principales
+## 📚 Documentos del Proyecto
 
-### Para Estudiantes (DEBES LEER):
+### ⭐ 3 Archivos Principales (DEBES LEER):
 
-1. **README.md** (este archivo)
-   - Qué es el proyecto
-   - Estructura y requisitos
-   - Inicio rápido
+| Archivo | Propósito | Cuándo leerlo |
+|---------|-----------|---------------|
+| **README.md** (este archivo) | ¿Qué es el proyecto? | PRIMERO, antes de empezar |
+| **INSTRUCCIONES.md** | ¿Cómo completarlo paso a paso? | Durante todo el proyecto |
+| **PLANTILLA_REPORTE.md** | ¿Qué entregar? | Mientras documentas |
 
-2. **INSTRUCCIONES.md** ⭐ **IMPORTANTE**
-   - Cómo completar cada paso
-   - Comandos a ejecutar
-   - Qué screenshots capturar
-   - Cómo documentar
-   - Troubleshooting
-
-3. **PLANTILLA_REPORTE.md** ⭐ **IMPORTANTE**
-   - Plantilla para tu reporte final
-   - Qué incluir en cada sección
-   - Ejemplos de documentación
-
-### Documentación Técnica por Paso:
+### 📖 Documentación Técnica por Paso:
 
 - `PASO_1_JUICE_SHOP.md` - Configuración de Juice Shop
 - `PASO_2_ELASTICSEARCH.md` - Implementación de Elasticsearch
@@ -157,6 +146,26 @@ cat PASO_1_JUICE_SHOP.md
 - `PASO_5_VISUALIZACION_KIBANA.md` - Visualizaciones y dashboards
 - `PASO_6_BLUE_TEAM.md` - Operaciones defensivas
 - `ACTIVIDADES_RED_TEAM.md` - Explotación de vulnerabilidades
+
+**Nota**: Lee estos documentos cuando estés en ese paso específico para profundizar conceptos.
+
+---
+
+## 🎯 Flujo de Trabajo Recomendado
+
+```
+1. README.md (este archivo)
+   ↓
+2. INSTRUCCIONES.md (Paso 1)
+   ↓
+3. PASO_1_JUICE_SHOP.md (profundizar)
+   ↓
+4. Ejecutar comandos del Paso 1
+   ↓
+5. Documentar en PLANTILLA_REPORTE.md
+   ↓
+6. Repetir pasos 2-5 para Pasos 2-6
+```
 
 ---
 
@@ -170,16 +179,20 @@ cat PASO_1_JUICE_SHOP.md
    - Análisis técnico completo
 
 2. **Screenshots** (mínimo 42)
-   - Organizados por paso
-   - Legibles y profesionales
-   - Ver INSTRUCCIONES.md para detalles
+   - Paso 1: 4 screenshots
+   - Paso 2: 5 screenshots
+   - Paso 3: 4 screenshots
+   - Paso 4: 5 screenshots
+   - Paso 5: 12 screenshots
+   - Paso 6: 12 screenshots
+   - Organizados por paso, legibles y profesionales
 
 3. **Red Team** (4 vulnerabilidades)
    - SQL Injection
    - Cross-Site Scripting (XSS)
    - Broken Authentication
    - Broken Access Control
-   - Con PoC reproducible y CVSS
+   - Cada una con PoC reproducible y CVSS v3.1
 
 4. **Blue Team** (3 reglas de detección)
    - Detección de SQLi
@@ -319,7 +332,7 @@ curl http://localhost:9200/_cat/indices?v
 
 ## ✅ Checklist Rápido
 
-Antes de empezar:
+### Antes de empezar:
 - [ ] Docker y Docker Compose instalados
 - [ ] Git instalado
 - [ ] Puertos 3000, 5601, 9200 libres
@@ -328,7 +341,7 @@ Antes de empezar:
 - [ ] Leído INSTRUCCIONES.md
 - [ ] Descargado PLANTILLA_REPORTE.md
 
-Durante el proyecto:
+### Durante el proyecto:
 - [ ] Paso 1 completado y documentado
 - [ ] Paso 2 completado y documentado
 - [ ] Paso 3 completado y documentado
@@ -336,12 +349,42 @@ Durante el proyecto:
 - [ ] Paso 5 completado y documentado
 - [ ] Paso 6 completado y documentado
 
-Antes de entregar:
+### Antes de entregar:
 - [ ] Reporte completo (mínimo 42 screenshots)
 - [ ] 4 vulnerabilidades explotadas
 - [ ] 3 reglas de detección configuradas
 - [ ] Archivos exportados (reglas, dashboard)
 - [ ] Revisado ortografía y formato
+
+---
+
+## 📊 Simplificación del Proyecto
+
+Este proyecto ha sido simplificado para tu comodidad:
+
+### Antes (Confuso) ❌
+```
+17 archivos diferentes
+Estudiantes: "¿Por dónde empiezo?" 😵
+```
+
+### Ahora (Claro) ✅
+```
+3 archivos principales + documentación técnica
+├── README.md ⭐ (Qué es)
+├── INSTRUCCIONES.md ⭐ (Cómo hacerlo)
+├── PLANTILLA_REPORTE.md ⭐ (Qué entregar)
+└── PASO_X.md (Profundizar conceptos)
+
+Estudiantes: "¡Perfecto, empiezo por README!" 😊
+```
+
+### Beneficios
+✅ **Menos confusión** - Solo 3 archivos principales  
+✅ **Flujo claro** - Sabes qué leer y cuándo  
+✅ **Todo en un lugar** - INSTRUCCIONES.md tiene todo el paso a paso  
+✅ **Plantilla lista** - Solo llenar la plantilla  
+✅ **Más tiempo haciendo** - Menos tiempo buscando información  
 
 ---
 
@@ -372,12 +415,46 @@ Si tienes preguntas:
 
 ---
 
+## 🎓 Estructura del Repositorio
+
+```
+proyecto_2/
+├── README.md ⭐ LEER PRIMERO
+├── INSTRUCCIONES.md ⭐ SEGUIR PASO A PASO
+├── PLANTILLA_REPORTE.md ⭐ USAR PARA DOCUMENTAR
+│
+├── PASO_1_JUICE_SHOP.md
+├── PASO_2_ELASTICSEARCH.md
+├── PASO_3_KIBANA.md
+├── PASO_4_FILEBEAT.md
+├── PASO_5_VISUALIZACION_KIBANA.md
+├── PASO_6_BLUE_TEAM.md
+├── ACTIVIDADES_RED_TEAM.md
+│
+├── Dockerfile
+├── docker-compose.yml
+├── filebeat.yml
+└── scripts/
+    └── blue-team-traffic.sh
+
+Ramas Git:
+├── paso-1-juice-shop
+├── paso-2-elasticsearch
+├── paso-3-kibana
+├── paso-4-filebeat
+├── paso-5-visualizacion
+└── paso-6-blue-team
+```
+
+---
+
 **¡Buena suerte con tu proyecto!** 🎉🚀
 
 **Recuerda**: Este es un proyecto de aprendizaje. Los errores son oportunidades para entender mejor. Documenta todo, pregunta cuando tengas dudas, y disfruta construyendo un sistema profesional.
 
 ---
 
-**Versión**: 1.0  
+**Versión**: 2.0 (Simplificada)  
 **Fecha**: 2025-11-10  
-**Curso**: Seguridad en Redes y Sistemas
+**Curso**: Seguridad en Redes y Sistemas  
+**Estado**: ✅ LISTO PARA ESTUDIANTES
