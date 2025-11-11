@@ -82,6 +82,7 @@ Cada paso tiene su documentación completa con explicaciones técnicas y cómo s
 - `PASO_3_KIBANA.md` - Configuración de Kibana
 - `PASO_4_FILEBEAT.md` - Integración con Filebeat
 - `PASO_5_VISUALIZACION_KIBANA.md` - Guía de uso de Kibana
+- `PASO_6_BLUE_TEAM.md` - Operaciones defensivas y detecciones Blue Team
 
 ## ✅ Progreso del Proyecto
 
@@ -118,6 +119,12 @@ Cada paso tiene su documentación completa con explicaciones técnicas y cómo s
 - [x] Visualizaciones creadas
 - [x] Dashboard armado
 - [x] Guía completa de uso
+
+### Paso 6: Defensa Blue Team
+- [x] Plan de actividades defensivas documentado
+- [x] Instrumentación propuesta (proxy, CORS, pipelines)
+- [x] Reglas de detección SQLi / XSS / Burst definidas
+- [x] Procedimientos de respuesta y reporte establecidos
 
 ## 🛠️ Comandos Útiles
 
