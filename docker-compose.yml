@@ -39,6 +39,29 @@ services:
       timeout: 10s
       retries: 5
 
+  # Kibana - Interfaz de visualizaci?n para Elasticsearch
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: kibana
+    ports:
+      - "5601:5601"  # Puerto web de Kibana
+    environment:
+      # URL de conexi?n a Elasticsearch
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    networks:
+      - elk-network
+    depends_on:
+      elasticsearch:
+        condition: service_healthy  # Espera a que Elasticsearch est? listo
+    restart: unless-stopped
+    healthcheck:
+      # Verifica que Kibana est? respondiendo
+      test: ["CMD-SHELL", "curl -f http://localhost:5601/api/status || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
 # Definici?n de redes
 networks:
   elk-network:
