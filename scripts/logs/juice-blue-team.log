@@ -1,0 +1,120 @@
+﻿2025-11-21 10:31:47 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 10:31:47 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 10:31:50 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 10:31:53 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 10:31:56 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 10:31:59 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 10:32:02 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 10:32:05 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 11:20:15 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 11:20:16 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 11:20:19 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 11:20:22 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 11:20:25 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 11:20:28 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 11:20:31 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 11:20:34 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 11:34:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 11:34:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 11:34:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 11:34:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 11:34:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 11:34:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 11:34:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 11:34:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 11:49:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 11:49:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 11:49:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 11:49:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 11:49:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 11:49:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 11:49:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 11:49:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:04:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:04:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 12:04:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 12:04:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 12:04:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 12:04:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 12:04:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 12:04:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:19:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:19:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 12:19:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 12:19:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 12:19:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 12:19:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 12:19:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 12:19:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:34:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:34:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 12:34:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 12:34:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 12:34:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 12:34:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 12:34:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 12:34:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:49:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 12:49:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 12:49:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 12:49:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 12:49:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 12:49:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 12:49:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 12:49:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:04:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:04:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 13:04:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 13:04:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 13:04:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 13:04:53 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 13:04:56 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 13:04:59 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:19:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:19:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 13:19:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 13:19:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 13:19:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 13:19:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 13:19:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 13:19:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:34:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:34:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 13:34:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 13:34:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 13:34:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 13:34:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 13:34:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 13:34:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:49:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 13:49:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 13:49:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 13:49:47 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 13:49:50 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 13:49:53 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 13:49:56 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 13:49:59 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 14:04:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 14:04:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 14:04:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 14:04:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 14:04:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 14:04:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 14:04:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 14:04:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 14:19:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 14:19:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 14:19:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 14:19:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 14:19:50 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 14:19:53 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 14:19:56 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 14:19:59 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 14:34:40 UTC - === INICIO EjecuciÃ³n Blue Team Traffic ===
+2025-11-21 14:34:40 UTC - OK - HTTP 200 - http://localhost:3000
+2025-11-21 14:34:43 UTC - OK - HTTP 200 - http://localhost:3000/#/login
+2025-11-21 14:34:46 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=apple
+2025-11-21 14:34:49 UTC - OK - HTTP 200 - http://localhost:3000/rest/products/search?q=juce
+2025-11-21 14:34:52 UTC - OK - HTTP 200 - http://localhost:3000/api/Products
+2025-11-21 14:34:55 UTC - WARNING - HTTP 500 - http://localhost:3000/rest/user/login
+2025-11-21 14:34:58 UTC - === FIN EjecuciÃ³n Blue Team Traffic ===

@@ -15,6 +15,26 @@ filebeat.inputs:
           target: "json"
           overwrite_keys: true
 
+  # Input tipo log - Para logs de Blue Team (tráfico legítimo)
+  - type: log
+    enabled: true
+    paths:
+      # Lee logs del script de Blue Team
+      - '/blue-team-logs/juice-blue-team.log'
+    # Parse multiline para agrupar logs relacionados
+    multiline.pattern: '^[0-9]{4}-[0-9]{2}-[0-9]{2}'
+    multiline.negate: true
+    multiline.match: after
+    # Campos personalizados para identificar logs de Blue Team
+    fields:
+      service.environment: "lab"
+      service.owner: "blue-team"
+      service.name: "blue-team-traffic-generator"
+    fields_under_root: false
+    # Agregar tags para facilitar filtrado
+    tags: ["blue-team", "baseline", "legitimate-traffic"]
+    # Nota: El parsing del formato del log se puede hacer en Elasticsearch con ingest pipelines si es necesario
+
 # Procesadores globales que se aplican a todos los logs
 processors:
   # Agrega informaci?n del host (hostname, OS, IP)
@@ -30,8 +50,13 @@ output.elasticsearch:
   # Host de Elasticsearch (usa variable de entorno o default)
   hosts: ["${ELASTICSEARCH_HOSTS:elasticsearch:9200}"]
   
-  # ?ndices din?micos basados en el contenedor
+  # ?ndices din?micos basados en el contenedor y tipo de log
   indices:
+    # Logs de Blue Team van a su propio ?ndice
+    # Se identifica por el campo personalizado service.owner
+    - index: "filebeat-blue-team-%{+yyyy.MM.dd}"
+      when.contains:
+        fields.service.owner: "blue-team"
     # Logs de Juice Shop van a su propio ?ndice
     - index: "filebeat-juice-shop-%{+yyyy.MM.dd}"
       when.contains:

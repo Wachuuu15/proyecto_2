@@ -74,6 +74,8 @@ services:
       - /var/lib/docker/containers:/var/lib/docker/containers:ro
       # Socket de Docker para metadata
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      # Logs de Blue Team (montado en /blue-team-logs dentro del contenedor)
+      - ./scripts/logs:/blue-team-logs:ro
       # Datos de Filebeat (registry, estado)
       - filebeat-data:/usr/share/filebeat/data
     environment:
@@ -88,6 +90,23 @@ services:
         condition: service_healthy  # Espera a que Elasticsearch est? listo
     restart: unless-stopped
     command: filebeat -e -strict.perms=false
+
+  # Blue Team Traffic Generator (Opcional) - Genera tráfico legítimo cada 15 minutos
+  # Descomenta este servicio si prefieres ejecutar el script desde Docker en lugar de Task Scheduler
+  # blue-team-traffic:
+  #   image: alpine:latest
+  #   container_name: blue-team-traffic
+  #   volumes:
+  #     - ./scripts:/scripts:ro
+  #     - ./scripts/logs:/scripts/logs
+  #   networks:
+  #     - elk-network
+  #   depends_on:
+  #     juice-shop:
+  #       condition: service_started
+  #   restart: unless-stopped
+  #   entrypoint: /bin/sh
+  #   command: -c "apk add --no-cache curl bash dcron && chmod +x /scripts/*.sh && echo '*/15 * * * * /scripts/cron-entry.sh' | crontab - && crond -f -l 2"
 
 # Definici?n de redes
 networks:
