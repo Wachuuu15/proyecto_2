@@ -14,6 +14,11 @@ filebeat.inputs:
           fields: ["message"]
           target: "json"
           overwrite_keys: true
+    # Campos personalizados para instrumentación ampliada
+    fields:
+      service.environment: "lab"
+      service.owner: "blue-team"
+    fields_under_root: false
 
   # Input tipo log - Para logs de Blue Team (tráfico legítimo)
   - type: log
@@ -35,6 +40,23 @@ filebeat.inputs:
     tags: ["blue-team", "baseline", "legitimate-traffic"]
     # Nota: El parsing del formato del log se puede hacer en Elasticsearch con ingest pipelines si es necesario
 
+  # Input tipo log - Para logs de Nginx (reverse proxy)
+  - type: log
+    enabled: true
+    paths:
+      # Lee logs de acceso y error de Nginx
+      - '/var/log/nginx/juice_access.log'
+      - '/var/log/nginx/juice_error.log'
+    # Parse formato de log de acceso de Nginx (formato extendido)
+    # Formato: $remote_addr - $remote_user [$time_local] "$request" $status $body_bytes_sent "$http_referer" "$http_user_agent"
+    # Se puede configurar un pattern personalizado si es necesario
+    fields:
+      service.environment: "lab"
+      service.owner: "blue-team"
+      service.name: "nginx-proxy"
+    fields_under_root: false
+    tags: ["nginx", "proxy", "reverse-proxy"]
+
 # Procesadores globales que se aplican a todos los logs
 processors:
   # Agrega informaci?n del host (hostname, OS, IP)
@@ -49,6 +71,14 @@ processors:
 output.elasticsearch:
   # Host de Elasticsearch (usa variable de entorno o default)
   hosts: ["${ELASTICSEARCH_HOSTS:elasticsearch:9200}"]
+  # Credenciales de Elasticsearch (si está habilitada la seguridad)
+  username: "${ELASTICSEARCH_USERNAME:elastic}"
+  password: "${ELASTICSEARCH_PASSWORD:changeme}"
+  
+  # Pipeline de ingest para normalización y detección de amenazas
+  # Nota: El pipeline debe crearse primero en Elasticsearch (ver instrucciones en PASO_6_BLUE_TEAM.md)
+  # Descomenta la siguiente línea después de crear el pipeline:
+  pipeline: "juice-threat-normalizer"
   
   # ?ndices din?micos basados en el contenedor y tipo de log
   indices:
@@ -61,6 +91,10 @@ output.elasticsearch:
     - index: "filebeat-juice-shop-%{+yyyy.MM.dd}"
       when.contains:
         container.name: "juice-shop"
+    # Logs de Nginx van a su propio ?ndice
+    - index: "filebeat-nginx-%{+yyyy.MM.dd}"
+      when.contains:
+        tags: "nginx"
     # Todos los dem?s logs van a ?ndice general
     - index: "filebeat-docker-%{+yyyy.MM.dd}"
 

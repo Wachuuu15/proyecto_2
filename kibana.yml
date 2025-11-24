@@ -1,0 +1,23 @@
+# Kibana Configuration File
+# Configuración para Elastic Security Detection Rules
+
+# Conexión a Elasticsearch
+elasticsearch.hosts: ["http://elasticsearch:9200"]
+
+# Clave de encriptación para objetos guardados (REQUERIDA para Detection Rules)
+# Debe tener al menos 32 caracteres
+xpack.encryptedSavedObjects.encryptionKey: "a_minimum_32_character_long_key_1234"
+
+# Clave de encriptación para Security
+xpack.security.encryptionKey: "a_minimum_32_character_long_key_1234"
+
+# Habilitar Security features
+xpack.security.enabled: true
+
+# Habilitar Fleet (para agentes y detección)
+xpack.fleet.enabled: true
+xpack.fleet.agents.enabled: true
+
+# Configuración del servidor
+server.host: "0.0.0.0"
+server.shutdownTimeout: "5s"

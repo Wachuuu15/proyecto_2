@@ -12,14 +12,14 @@ if (-not (Test-Path -Path $LOG_DIR)) {
     Write-Host "Directorio $LOG_DIR creado exitosamente"
 }
 
-# Definir endpoints
+# Definir endpoints - Ahora usando el reverse proxy Nginx en puerto 8080
 $ENDPOINTS = @(
-    "http://localhost:3000"
-    "http://localhost:3000/#/login"
-    "http://localhost:3000/rest/products/search?q=apple"
-    "http://localhost:3000/rest/products/search?q=juce"
-    "http://localhost:3000/api/Products"
-    "http://localhost:3000/rest/user/login"
+    "http://localhost:8080"
+    "http://localhost:8080/#/login"
+    "http://localhost:8080/rest/products/search?q=apple"
+    "http://localhost:8080/rest/products/search?q=juce"
+    "http://localhost:8080/api/Products"
+    "http://localhost:8080/rest/user/login"
 )
 
 # Función para registrar mensajes en el log
